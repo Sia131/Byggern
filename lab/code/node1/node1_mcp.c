@@ -22,8 +22,6 @@ void mcp_cs(uint8_t c){
     }
 }
 
-void mcp_init();
-
 uint8_t mcp_read(uint8_t address){
     //first wwrite the comand for read instruciton
     mcp_cs(0);

@@ -2,12 +2,10 @@
 #include "node1_USART.h"
 #include <avr/delay.h>
 #include <avr/interrupt.h>
-
-
-void can_intr_init(){
-    DDRE &= ~(1 << PD2);
-}
-
+#include "node1_mcp.h"
+#include "mcp2515.h"
+#include <avr/io.h>
+#include <stdio.h>
 
 void can_init(){
     mcp_reset();
@@ -23,16 +21,17 @@ void can_write(MESSAGE* message){ // still missing support for multiple buffer i
     while (mcp_read(MCP_TXB0CTRL) & (1 << 3)) {_delay_ms(1);}
     //load transmit buffers
     mcp_write(MCP_TXB0SIDH,ID >> 3);
-    mcp_write(MCP_TXB0SIDL, ID << 5); //most likely all messages will be 8bit so this is unneccessary        
+    mcp_write(MCP_TXB0SIDL, ID << 5); //last 3 bit
     mcp_write(MCP_TXB0DLC, length & 0x0F);
     for (int i=0; i < length;i++){
-        mcp_write(MCP_TXB0Dm + i, data[i]) 
+        mcp_write(MCP_TXB0Dm + i, data[i]);
     }
 
     mcp_request_to_send();
 }
 
-void can_receive(MESSAGE* msg){
+MESSAGE* can_receive(){
+    MESSAGE* msg;
     if ( (mcp_read(MCP_CANINTF) & 1)|| received){
         msg->id = mcp_read(MCP_RXB0SIDH) << 3;
         msg->id |= mcp_read(MCP_RXB0SIDL) >> 5;
@@ -43,10 +42,10 @@ void can_receive(MESSAGE* msg){
     mcp_bit_modify(MCP_CANINTF, 0x01, 0);
     received = 0;
     }
-
+return msg;
 }
 
-
+/*
 void can_intr_init(){
     DDRD &= ~(1 << PD2);
     clei();
@@ -61,4 +60,4 @@ void can_intr_init(){
 ISR(INT0_vect){
     //check for different stuff
     //set the same variable to true
-}
+}*/

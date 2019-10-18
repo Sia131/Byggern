@@ -3,6 +3,8 @@
 #include "node1_mcp.h"
 #include "mcp2515.h"
 
+#ifndef NODE1_CAN_H_
+#define NODE1_CAN_H_
 static uint8_t received;
 
 
@@ -26,7 +28,8 @@ void can_init();
 
 void can_intr_init();
 
-void can_transmitt(const MESSAGE *message);
+void can_write(MESSAGE *message);
 
-void can_receive(MESSAGE *message);
+MESSAGE* can_receive();
 
+#endif

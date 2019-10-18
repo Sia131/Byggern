@@ -3,8 +3,6 @@
 #include "mcp2515.h"
 
 
-
-
 void mcp_cs(uint8_t c);
 
 uint8_t mcp_read(uint8_t address);

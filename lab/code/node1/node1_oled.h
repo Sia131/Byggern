@@ -1,6 +1,10 @@
 
 #include "node1_memory_map.h"
 #include <stdlib.h>
+#include "fonts.h"
+
+//#include <avr/pgmspace.h>
+
 #ifndef NODE1_OLED_H_
 #define NODE1_OLED_H_
 

@@ -1,7 +1,12 @@
-#include <avr/io.h>
-#include <stdint.h>
+//#include <avr/io.h>
+//#include "mcp2515.h"
+
 #include "node1_mcp.h"
-#include "mcp2515.h"
+
+#include <stdint.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
 
 #ifndef NODE1_CAN_H_
 #define NODE1_CAN_H_
@@ -11,7 +16,7 @@ static uint8_t received;
 typedef struct MESSAGE{
     uint8_t id;
     uint8_t length;
-    uint8_t data[8];
+    uint8_t data[8]; // 0->8 bytes
 }MESSAGE;
 
 typedef enum CAN_ID{
@@ -28,8 +33,8 @@ void can_init();
 
 void can_intr_init();
 
-void can_write(const MESSAGE *message);
+void can_write(const MESSAGE *msg);
 
-MESSAGE* can_receive(MESSAGE *msg);
+void can_receive(MESSAGE *msg);
 
 #endif

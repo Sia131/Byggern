@@ -1,7 +1,6 @@
 
 #include "node1_oled.h"
-#include "fonts.h"
-#include <avr/pgmspace.h>
+
 
 //these are the lowest abstraction functions
 void oled_write_data(uint8_t data){

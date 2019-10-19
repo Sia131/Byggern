@@ -4,9 +4,10 @@
  * Created: 12.07.2019 06:43:45
  *  Author: siawashn
  */ 
-#include <avr/io.h>
+//#include <avr/io.h>
+//#include <stdlib.h>
+
 #include "node1_USART.h"
-#include <stdlib.h>
 #include <util/delay.h>
 
 #ifndef NODE1_MEMORY_MAP_H_

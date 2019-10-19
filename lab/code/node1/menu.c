@@ -1,10 +1,4 @@
 
-#include "node1_USART.h"
-#include "node1_memory_map.h"
-#include <util/delay.h>
-#include "node1_joystick.h"
-#include "node1_slider.h"
-#include "node1_oled.h"
 #include "menu.h"
 
 static menu_node_t* node_home;

@@ -14,7 +14,7 @@ void can_init(){
     mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 }
 
-void can_write(MESSAGE* message){ // still missing support for multiple buffer inputs
+void can_write( const MESSAGE* message){ // still missing support for multiple buffer inputs
     unsigned int ID = message->id;
     char* data = message->data;
     uint8_t length = message->length;
@@ -30,19 +30,22 @@ void can_write(MESSAGE* message){ // still missing support for multiple buffer i
     mcp_request_to_send();
 }
 
-MESSAGE* can_receive(){
-    MESSAGE* msg;
+void can_receive(MESSAGE *msg){
     if ( (mcp_read(MCP_CANINTF) & 1)|| received){
         msg->id = mcp_read(MCP_RXB0SIDH) << 3;
         msg->id |= mcp_read(MCP_RXB0SIDL) >> 5;
+
+        //Read length
         msg->length = mcp_read(MCP_RXB0DLC) & 0x0F;
+
+        //Read data
         for (int i=0;i < msg->length; i++){
-            msg->data[i] = mcp_read(MCP_RXB0DM + i);
+            msg->data[i] = mcp_read(0x66 + i);
         }
+    //Clear CANINTF. RX0IF after reset
     mcp_bit_modify(MCP_CANINTF, 0x01, 0);
     received = 0;
     }
-return msg;
 }
 
 /*

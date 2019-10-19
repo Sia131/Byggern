@@ -28,8 +28,8 @@ void can_init();
 
 void can_intr_init();
 
-void can_write(MESSAGE *message);
+void can_write(const MESSAGE *message);
 
-MESSAGE* can_receive();
+MESSAGE* can_receive(MESSAGE *msg);
 
 #endif

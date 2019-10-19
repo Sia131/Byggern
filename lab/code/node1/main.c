@@ -15,36 +15,29 @@
 #include "node1_CAN.h"
 
 int main(void){
-       oled_init();
-       JOYSTICK my_joy;
-       menu_init();
-       while(1) {
-               get_joystick_values(&my_joy);
-               printf("x: %d\ty: %d\n", my_joy.x_analog, my_joy.y_analog);
-	   }
-	/*printf("Melding.\r\n");
 
 	USART_Init(MYUBRR);
 	memory_map_init();
 	can_init();
-	MESSAGE message = {
-		1, // Id
-		6, // Lengde på dataen
-		"heiiii" // Data. Maks åtte byte
-	};
-	can_write(&message); // Sender melding
-
-	// Nå er meldingen sendt. Fordi vi er i loopbackmodus blir meldingen umiddelbart "mottatt" ac MCP2515.
-
-	// Mottar melding
+	
+	MESSAGE message; 
+	message.id = 1;
+	message.length = 3;
+	message.data = "hei"
+	can_write(&message); // Sender melding Mottar melding
+	
 	MESSAGE* receive = can_receive();
 	printf("Id: %d \r\n", receive->id);
 	printf("Lengde: %d \r\n", receive->length);
 	printf("Melding: %s \r\n\r\n", receive->data);
-	*/
-	while(1){
-		printf("helll world");
+	
+	DDRB |= (1 << PB1); //set as output
+
+	while (1) {	
+		PORTB |= (1 << PB1);
+		//printf("ashwhole\n");
 	}
+	
 	return 0; 
 
 }

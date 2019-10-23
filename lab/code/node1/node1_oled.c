@@ -1,5 +1,7 @@
 
 #include "node1_oled.h"
+#include "fonts.h"
+
 
 
 //these are the lowest abstraction functions

@@ -3,9 +3,6 @@
 
 #include "node1_mcp.h"
 
-#include <stdint.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
 
 
 #ifndef NODE1_CAN_H_

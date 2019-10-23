@@ -11,7 +11,6 @@
 
 #include <avr/io.h>
 #include <stdio.h>
-
 #define F_CPU 4915200UL
 
 #define BAUD 9600

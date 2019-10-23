@@ -2,13 +2,14 @@
 //#include "node1_memory_map.h"
 //#include <util/delay.h>
 
+#ifndef MENU_H_
+#define MENU_H_
+
 #include "node1_joystick.h"
 #include "node1_slider.h"
 #include "node1_oled.h"
-#include "fonts.h"
 
-#ifndef MENU_H_
-#define MENU_H_
+
 
 typedef struct menu_node_t {
     char* name;

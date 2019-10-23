@@ -14,10 +14,12 @@ void spi_init(){
     DDRB = (1 << PB4)|(1 << PB5)|(1 << PB7);
 
     /*Set MISO as input */
-    DDRB &= ~(1 << PB6); 
+    //DDRB &= ~(1 << PB6); 
 
     /* Enable SPI, Master, set clock rate fck/16 */
-    SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);
+    SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<SPIE);
+
+    PORTB |= (1 << PB4);
 }
 
 void spi_transmitt(uint8_t cData){
@@ -28,8 +30,17 @@ void spi_transmitt(uint8_t cData){
 }
 
 uint8_t spi_receive(){
+    SPDR = 0xff;
     /* Wait for reception complete */
     while(!(SPSR & (1<<SPIF)));
     /* Return data register */
+    printf("hei\r\n");
+    return SPDR;
+}
+
+uint8_t spi_master_transmitt(char data){
+    SPDR = data;
+    while (!(SPSR &  (1 << SPIF)));
+
     return SPDR;
 }

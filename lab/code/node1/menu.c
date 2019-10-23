@@ -1,5 +1,7 @@
 
 #include "menu.h"
+//#include "fonts.h"
+
 
 static menu_node_t* node_home;
 static menu_node_t* node_play_game;
@@ -122,7 +124,7 @@ void menu_node_init(menu_node_t* node, char* name, menu_node_t* parent, menu_nod
 
 void menu_init(){
     create_linked_list();
-    //printf("%s\n", node_set_brightness->parent->name);
+    printf("%s\n", node_set_brightness->parent->name);
     volatile int joystick_pos = 1;
     volatile int* position = &joystick_pos;
     JOYSTICK menu_joystick;

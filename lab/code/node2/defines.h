@@ -62,8 +62,7 @@ use reuse alot of the modules.
 #elif __AVR_ATmega2560__
 
     /* generic */
-    #define F_CPU 16000000UL
-
+    
 	
     /*SPI*/
     #define SPI_MOSI PB2
@@ -129,8 +128,7 @@ use reuse alot of the modules.
 #endif
 
 /******** COMMON *********/
-#define BAUD 9600
-#define MYUBRR F_CPU/16/BAUD-1
+
 
 /**************************/
 #endif

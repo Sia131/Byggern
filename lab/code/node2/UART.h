@@ -4,50 +4,9 @@
 #include <avr/io.h>
 #include <stdio.h>
 
-
-/************************************************************
-Universal Asynchronous serial Receiver and Transmitter (UART)
-
-Implements UART module for ATmega162 and ATmega 2560
-
-There is support for Universal Synchronous and Asynchronous
-serial Receiver and Transmitter, though this is not necessary
-for this system. 
-
-Uses 8 bit data, 2 stop bits, baudrate 9600 and normal 
-transmission speed. 
-
-The functions implemented are:
-
-	UART_Init(unsigned int ubrr)
-	
-		Initializes the module for the settings described.
-		The ubrr parameter is calculated based on the 
-		baudrate and the CPU frequency, see defines.h
-		
-	UART_Transmit(unsigned char data)	
-		
-		Transmitts the parameter once the transmit buffer
-		is empty. 
-		
-	UART_Receive()
-	
-		Waits for data to be recieved. Returns the value 
-		recieved. 
-		
-	put_char(char data, FILE* file)
-		
-		Wrapper function for UART_Transmit, to be used with
-		the printf function. Also implements transmitting
-		'\r' when '\n' is transmitted, for easier formatting. 
-		
-	get_char(FILE* file)
-	
-		Wrapper function for UART_Receive,to be used with
-		the printf function. Returns the return value 
-		from UART_Receive.
-
-************************************************************/
+#define F_CPU 16000000UL
+#define BAUD 9600
+#define MYUBRR F_CPU/16/BAUD-1
 
 void UART_Init(unsigned int ubrr);
 

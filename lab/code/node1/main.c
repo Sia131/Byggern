@@ -17,32 +17,6 @@ int main(void){
 	can_init();
 
 	
-
-	
-	MESSAGE message = {
-		1,
-		5,
-		"heiii"
-	};
-
-	can_write(&message); // Sender melding Mottar melding
-	
-	MESSAGE receive = {
-		2,
-		3,
-		"lool",
-	};
-
-	
-	can_receive(& receive);
-
-	
-	printf("Id: %d \n", receive.id);
-	printf("Lengde: %d \r\n", receive.length);
-	printf("Melding: %s \r\n\r\n", receive.data);
-	
-	
-	
 	while (1) {	
 	}
 	

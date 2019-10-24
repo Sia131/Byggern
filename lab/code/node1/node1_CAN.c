@@ -24,8 +24,6 @@
 void can_init(){
     spi_init();
     mcp_reset();
-    received = 0;
-    
 
 	// tester om jeg er i configure mode
 	uint8_t mode = mcp_read(MCP_CANSTAT);
@@ -33,9 +31,9 @@ void can_init(){
 		printf("MCP2515 er ikke i konfigurasjonsmodus etter reset. CANSTAT: %x \r\n", mode);
 	}
 
-    //det er noe galt med can interrupt init
-    //den gjør at koden ikke kjører videre og at alt kjører i loop
-    //can_intr_init();
+    printf("ddddd");
+    can_intr_init();
+
 
     // set loopback mode
     mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
@@ -47,37 +45,22 @@ void can_init(){
 }
 
 void can_write( const MESSAGE* msg){ // still missing support for multiple buffer inputs
-    
-    /* Not secessarily what we need
-    while (mcp_read(MCP_TXB0CTRL) & (1 << 3)) {_delay_ms(1);} 
-    */
-
-
     //load transmit buffers
     mcp_write(MCP_TXB0SIDH, msg->id >> 3);
     mcp_write(MCP_TXB0SIDL, msg->id << 5); //last 3 bit
     mcp_write(MCP_TXB0DLC, msg->length & 0x0F);
 
-
     for (int i=0; i < msg->length; ++i){
 
         mcp_write(MCP_TXB0D0 + i, (msg->data)[i]);
     }
+    //Set the TXB0CTRL.TXREQ bit to start transmission
     mcp_request_to_send();
-
-
-    /*no secesarily what we need
-    ready to transmitt, highest priority
-    mcp_bit_modify(MCP_TXB0D0, 0x0B, 0xFF);
-    */
+    
 }
 
-
 void can_receive(MESSAGE *msg){
-    
-    //if received
-    if ( (mcp_read(MCP_CANINTF) & 1) || received){
-        
+    if ( (mcp_read(MCP_CANINTF) & 0x01) || received){
         //reset id
         msg->id = mcp_read(MCP_RXB0SIDH) << 3;
         msg->id |= mcp_read(MCP_RXB0SIDL) >> 5;
@@ -95,40 +78,24 @@ void can_receive(MESSAGE *msg){
 
         //clear flags
         received = 0;
-
     }
 }
 
-
 void can_intr_init(){
-
     DDRD &= ~(1 << PD2);
     cli();
-    MCUCR |= ( 1 << ISC01);
     GICR |= (1 << INT0);
+    MCUCR |= ( 1 << ISC01);
     sei();
-    
     received = 0;
-
-    //generate interrupt in interrupt pin when message is received
-    mcp_bit_modify(MCP_CANINTE, 0x01, 0x00);
-    mcp_bit_modify(MCP_CANINTE, 0x01, 0xFF);
-
-    //reset interrupt
-    mcp_bit_modify(MCP_CANINTF, 0x01, 0x00);
-
+    //set the receive interrup on buffer 0, set all other interups to disabled
+    mcp_bit_modify(MCP_CANINTE, 0xFF, 0x01);
 }
 
 ISR(INT0_vect){
-    //turn of all interrupts
-    cli();
-
-    //check if interrupt has occured
-    if(mcp_read(MCP_CANINTF) & 1){
-        received = 1;
-    }
-
-    //reset interrupt manually
-    mcp_bit_modify(MCP_CANINTF, 0x01, 0x00);
+    received = 1;
+    mcp_bit_modify(MCP_CANINTF, 0x01, 0);
 
 }
+
+ISR(BADISR_vect){}

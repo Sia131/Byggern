@@ -1,5 +1,5 @@
-#ifndef UART_H
-#define UART_H
+#ifndef NODE2_USART_H_
+#define NODE2_USART_H_
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -8,14 +8,16 @@
 #define BAUD 9600
 #define MYUBRR F_CPU/16/BAUD-1
 
-void UART_Init(unsigned int ubrr);
 
-void UART_Transmit(unsigned char data);
+void USART_Init(unsigned int ubrr);
 
-char UART_Receive();
+void USART_Transmit(unsigned char data);
+
+char USART_Receive();
 
 int put_char(char data, FILE* file);
 
 int get_char(FILE* file);
 
-#endif
+
+#endif /* NODE2_USART_H_ */

@@ -34,7 +34,6 @@ uint8_t spi_receive(){
     /* Wait for reception complete */
     while(!(SPSR & (1<<SPIF)));
     /* Return data register */
-    printf("hei\r\n");
     return SPDR;
 }
 

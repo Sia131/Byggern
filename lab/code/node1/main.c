@@ -12,50 +12,13 @@
 
 
 int main(void){
-	
 	USART_Init(MYUBRR);
-	//memory_map_init();
+	memory_map_init();
 	can_init();
 
+	
 
 	
-	while (1) {	
-	}
-	
-	return 0; 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*
 	MESSAGE message = {
 		1,
 		5,
@@ -69,9 +32,21 @@ int main(void){
 		3,
 		"lool",
 	};
-	_delay_ms(4);
+
+	
 	can_receive(& receive);
+
+	
 	printf("Id: %d \n", receive.id);
 	printf("Lengde: %d \r\n", receive.length);
 	printf("Melding: %s \r\n\r\n", receive.data);
-	*/
+	
+	
+	
+	while (1) {	
+	}
+	
+	return 0; 
+
+}
+

@@ -14,12 +14,19 @@
 int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
-	can_init();
+	SRAM_test();
+	JOYSTICK joystick;
+	SLIDER slider;
 
-	
+
+
+	DDRB &= ~(1 << PB1);
+	//DDRB |= (1 << PB1);
 	while (1) {	
+	//printf("dd");
+
+	printf("%x \n",(PINB & 0b00000010) >> 1);
 	}
-	
 	return 0; 
 
 }

@@ -16,10 +16,10 @@ Command and data are written to the SI pin
 
 void mcp_cs(uint8_t c){
     if(c){
-        PORTB |= (1 << PB4); 
+        PORTB |= (1 << SPI_SS); 
     }
     else{
-        PORTB &= ~(1 << PB4); 
+        PORTB &= ~(1 << SPI_SS); 
     }
 }
 

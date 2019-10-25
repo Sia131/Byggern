@@ -33,12 +33,11 @@ void can_init(){
 
 	// tester om jeg er i configure mode
 	uint8_t mode = mcp_read(MCP_CANSTAT);
-	if ((mode & MODE_MASK) != MODE_CONFIG) {
+	if (mode & MODE_MASK != MODE_CONFIG) {
 		printf("MCP2515 er ikke i konfigurasjonsmodus etter reset. CANSTAT: %x \r\n", mode);
 	}
 
-    can_intr_init();
-
+    //can_intr_init();
 
     // set loopback mode
     mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);

@@ -13,23 +13,11 @@ int main(){
         5,
         "asdfg",
     };
-
-    MESSAGE receive;
     
-    can_write(&message);
-    _delay_ms(1);
-
-    can_receive(&receive);
-
-    printf("id   %d\r\n", receive.id);
-    printf("length   %d\r\n", receive.length);
-    printf("data   %d\r\n", receive.data);
-    
-
-   //spi_init();
 
     while(1){
-
+        can_write(&message);
+        
     }
     return 0;
 }

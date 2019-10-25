@@ -22,10 +22,23 @@
 #define INTRREG EIMSK
 #define INTRSEL INT2
 
-#define INTRSC  ISC01    
+#define INTRSC  ISC21    
 #define INTRSET EICRB 
 #define INTR_VECT INT2_vect
 
+void can_intr_init(){
+
+    DDRD &= ~(1 << PD2);
+    cli();
+    
+	INTRREG = (1 << INTRSEL);
+    INTRSET = ( 1 << INTRSC);
+    sei();
+
+    received = 0;
+    //Enable the receive interrup on buffer 0, set all other interups to disabled
+    mcp_bit_modify(MCP_CANINTE, 0xFF, 0x01);
+}
 
 void can_init(){
     spi_init();
@@ -37,7 +50,7 @@ void can_init(){
 		printf("MCP2515 er ikke i konfigurasjonsmodus etter reset. CANSTAT: %x \r\n", mode);
 	}
 
-    //can_intr_init();
+    can_intr_init();
 
     // set loopback mode
     mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
@@ -85,22 +98,18 @@ void can_receive(MESSAGE *msg){
     }
 }
 
-void can_intr_init(){
-    DDRD &= ~(1 << PD2);
-    cli();
-	INTRREG |= (1 << INTRSEL);
-	INTRSET |= ( 1 << INTRSC);
-    sei();
 
-    received = 0;
-    //Enable the receive interrup on buffer 0, set all other interups to disabled
-    mcp_bit_modify(MCP_CANINTE, 0xFF, 0x01);
-}
 
 ISR(INTR_VECT){
     received = 1;
     mcp_bit_modify(MCP_CANINTF, 0x01, 0);
-
+    MESSAGE receive;
+    can_receive(&receive);
+    printf("id   %d\r\n", receive.id);
+    printf("length   %d\r\n", receive.length);
+    printf("data   %d\r\n", receive.data);
+    
 }
+
 
 ISR(BADISR_vect){}

@@ -105,9 +105,9 @@ ISR(INTR_VECT){
     mcp_bit_modify(MCP_CANINTF, 0x01, 0);
     MESSAGE receive;
     can_receive(&receive);
-    printf("id   %d\r\n", receive.id);
-    printf("length   %d\r\n", receive.length);
-    printf("data   %d\r\n", receive.data);
+    //printf("id   %d\r\n", receive.id);
+    //printf("length   %d\r\n", receive.length);
+    printf("melding  %s \r\n", receive.data);;
     
 }
 

@@ -10,8 +10,8 @@ int main(){
     can_init();
     MESSAGE message = {
         2, 
-        5,
-        "asdfg",
+        8,
+        "abcdefgh",
     };
     
 

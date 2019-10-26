@@ -1,4 +1,3 @@
-
 #include "node1_memory_map.h"
 
 #ifndef NODE1_JOYSTICK_H_

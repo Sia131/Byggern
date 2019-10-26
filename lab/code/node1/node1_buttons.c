@@ -10,9 +10,10 @@ void buttons_init(){
 }
 
 void get_buttons(BUTTONS *button){
-    button->joystick_button = (PINB & 0b00000001);
-    button->slider_left_button = ((PINB & 0b00000010) >> 1);
-    button-> slider_right_button = ((PINB & 0b00000100) >> 2);
+    buttons_init();
+    button->joystick_button = (PINB & 0b00000001) >> JOYSTICK_BTN;
+    button->slider_left_button = ((PINB & 0b00000010) >> SLIDER_LEFT_BTN);
+    button->slider_right_button = ((PINB & 0b00000100) >> SLIDER_RIGHT_BTN);
 }
 
 

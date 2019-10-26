@@ -36,15 +36,16 @@ void can_init(){
 
 
     // set loopback mode
-    mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
-    printf("CANSTAT: %x\r\n", mcp_read(MCP_CANSTAT));
+    //mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 
     //normal mode
-    //mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+    mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+
+    printf("CANSTAT: %x\r\n", mcp_read(MCP_CANSTAT));
     
 }
 
-void can_write( const MESSAGE* msg){ // still missing support for multiple buffer inputs
+void can_write(const MESSAGE* msg){ // still missing support for multiple buffer inputs
     //load transmit buffers
     mcp_write(MCP_TXB0SIDH, msg->id >> 3);
     mcp_write(MCP_TXB0SIDL, msg->id << 5); //last 3 bit

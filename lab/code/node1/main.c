@@ -15,6 +15,7 @@
 int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
+	can_init();
 
 
 	while (1) {

@@ -31,18 +31,14 @@ void can_init(){
 		printf("MCP2515 er ikke i konfigurasjonsmodus etter reset. CANSTAT: %x \r\n", mode);
 	}
 
-    printf("ddddd");
     can_intr_init();
-
 
     // set loopback mode
     //mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 
     //normal mode
     mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
-
     printf("CANSTAT: %x\r\n", mcp_read(MCP_CANSTAT));
-    
 }
 
 void can_write(const MESSAGE* msg){ // still missing support for multiple buffer inputs

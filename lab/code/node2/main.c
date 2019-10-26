@@ -9,12 +9,10 @@ int main(){
     can_init();
     
     USER_DATA user_data; 
-    
-
 
     while(1){
         input_com_receive_data(&user_data);
-        printf("joystick_button %d\r\n",user_data.joystick_button);
+        printf("joystick_button %d\r\n",user_data.x_analog);
         
     }
     return 0;

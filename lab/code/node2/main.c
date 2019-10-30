@@ -3,6 +3,7 @@
 #include <util/delay.h>
 #include "node2_input_com.h"
 #include "node2_pwm.h"
+#include "node2_adc.h"
 
 
 int main(){
@@ -10,14 +11,10 @@ int main(){
     can_init();
     pwm_init();
 
-    //pwm_set_ms(0.9);
 
-    pwm_set_angle(180);
 
-    int i = 0;
-    while(1){
-        _delay_ms(10);
-        pwm_set_angle(i++);
+
+    while(1){;
     }
     return 0;
 }

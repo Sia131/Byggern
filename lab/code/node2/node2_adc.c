@@ -1,6 +1,6 @@
 #include "node2_adc.h"
 
-void aadc_init(){
+void adc_init(){
     /*set ADC2 as input*/
     DDRF &= ~(1 << PF2);
 
@@ -19,17 +19,18 @@ void aadc_init(){
     ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);
 
     /* Left shift the ADC data */
-    ADLAR = 1
+    //ADMUX |= (1 <<ADLAR);
 }
 
 
 
-int adc_read(){
+uint16_t adc_read(){
     /*start conversion */
-    ADCSRA |= (1 << ADCS);
-
+    ADCSRA |= (1 << ADSC);
     while(!(ADCSRA & (1 <<ADIF))){}
-    return (ADCH);
+    //printf("ddd");
+    //double adc = ADCH;
+    return ADC;
 }
 
 

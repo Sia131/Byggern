@@ -5,9 +5,9 @@
 #include <util/delay.h>
 #include <stdio.h>
 
-void aadc_init();
+void adc_init();
 
-int adc_read();
+uint16_t adc_read();
 
 
 #endif

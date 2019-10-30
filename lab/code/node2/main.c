@@ -10,11 +10,14 @@ int main(){
     USART_Init(MYUBRR);
     can_init();
     pwm_init();
+    adc_init();
 
 
 
+    while(1){
+        uint16_t adc = adc_read();
+        printf("%d   \r\n" , adc);
 
-    while(1){;
     }
     return 0;
 }

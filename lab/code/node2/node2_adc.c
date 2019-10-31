@@ -2,6 +2,7 @@
 
 void adc_init(){
     /*set ADC2 as input*/
+    /*Pin A2 on shield */
     DDRF &= ~(1 << PF2);
 
     /*AVCC with external capacitor ar AREF  pin */

@@ -129,8 +129,8 @@ void menu_init(){
     volatile int* position = &joystick_pos;
     JOYSTICK menu_joystick;
     print_menu();
-    _delay_ms(3000);
-    print_settings();
+    //_delay_ms(3000);
+    //print_settings();
 
 }
 

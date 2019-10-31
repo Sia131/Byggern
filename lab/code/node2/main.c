@@ -11,13 +11,10 @@ int main(){
     can_init();
     pwm_init();
     adc_init();
-
-
-
     while(1){
-        uint16_t adc = adc_read();
+        joystick_to_servo();
+       uint16_t adc = adc_read();
         printf("%d   \r\n" , adc);
-
     }
     return 0;
 }

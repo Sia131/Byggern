@@ -18,11 +18,6 @@ int main(void){
 	can_init();
 	JOYSTICK joystick;
 
-	
-	
-	
-
-
 	while (1) {
 		
 		input_com_send_data();

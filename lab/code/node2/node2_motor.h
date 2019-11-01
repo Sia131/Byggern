@@ -27,10 +27,10 @@ void motor_disable();
 void motor_set_direction(int dir);
 
 /*sets the actuator input value to motor*/
-void motor_set_u(uint8_t value, int dir);
+void motor_set_u(int16_t value);
 
 /*reads the encoder value*/
-uint16_t motor_read_encoder();
+int16_t motor_read_encoder();
 
 /*resets the encoder*/
 void motor_reset_encoder();
@@ -38,9 +38,11 @@ void motor_reset_encoder();
 /*remaps slider from 0 to 100, over to -255 to 255*/
 uint8_t right_slider_remapping(USER_DATA *user_data);
 
-void joystick_to_u(USER_DATA *user_data);
+void slider_to_u(USER_DATA *user_data);
 
+uint8_t right_slider_remapping(USER_DATA *user_data);
 
+void slider_to_u(USER_DATA *user_data);
 
 
 #endif

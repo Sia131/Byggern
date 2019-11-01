@@ -18,7 +18,7 @@ void motor_init(){
     DDRH |= (1 << EN);
 
     motor_reset_encoder();
-    motor_enable();
+    motor_disable();
 }
 
 void motor_enable(){
@@ -46,22 +46,36 @@ void motor_reset_encoder(){
 }
 
 
-uint16_t motor_read_encoder(){
+int16_t motor_read_encoder(){
     MOTOR_CONFIG &= ~(1 << OE);
     MOTOR_CONFIG &= ~(1 << SEL);
     _delay_us(20);
-    int16_t enoder = (MOTOR_ENC << 8);
+    int16_t encoder = (MOTOR_ENC << 8);
     MOTOR_CONFIG |= (1 << SEL);
     _delay_us(20);
-    enoder |= MOTOR_ENC;
+    encoder |= MOTOR_ENC;
     MOTOR_CONFIG |= (1 << OE);
+
+    return encoder;
 }
 
-void motor_set_u(uint8_t value, int dir){
-    motor_set_direction(dir);
-    dac_send_analogue(value);
+void motor_set_u(int16_t value){
+    motor_enable();
+    if (value < -10){
+        motor_set_direction(-1);
+        dac_send_analogue((uint8_t) ((-value) & 0xFF));
+    }
+    else if (value > 10){
+        motor_set_direction(1);
+        dac_send_analogue((uint8_t) ((value) & 0xFF));
+    }
+    else{
+        dac_send_analogue(0);
+    }
 }
 
+
+/*
 
 uint8_t right_slider_remapping(USER_DATA *user_data){
     int slider = user_data->right_analog;
@@ -76,8 +90,7 @@ uint8_t right_slider_remapping(USER_DATA *user_data){
     }
 }
 
-
-void joystick_to_u(USER_DATA *user_data){
+void slider_to_u(USER_DATA *user_data){
     int slider = user_data->right_analog;
     uint8_t new_slider = right_slider_remapping(user_data);
     if (slider > 50){
@@ -87,3 +100,4 @@ void joystick_to_u(USER_DATA *user_data){
         motor_set_u(new_slider, -1);
     }
 }
+*/

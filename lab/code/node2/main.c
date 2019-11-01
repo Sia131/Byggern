@@ -5,6 +5,7 @@
 #include "node2_pwm.h"
 #include "node2_adc.h"
 #include "node2_motor.h"
+#include "node2_controller.h"
 
 
 int main(){
@@ -12,20 +13,22 @@ int main(){
     can_init();
     pwm_init();
     adc_init();
-    motor_init();
+    //motor_init();
+    //controller_init(4, 0, 4);
+    //controller_set_reference(50);
 
-    USER_DATA user_data;
-    //uint8_t slider = right_slider_remapping(& user_data);
+    //int32_t value = -3333333;
+    //uint8_t next = value;
+    //printf("%d \r\n", next);
+
 
     while(1){
-        input_com_receive_data(& user_data);
-        /*
-        //printf("%d   \r\n", user_data.x_analog);
-        uint8_t slider = right_slider_remapping(& user_data);
-        printf("slider before  %d   slider now   %d \r\n" ,user_data.right_analog,  slider);
-        */
-    joystick_to_u(& user_data);
+        uint16_t adc = adc_read();
+        printf("%x  \r\n", adc);
 
+        //joystick_to_servo();
+        //controller_update();
+        //controller_update();
     }
     return 0;
 }

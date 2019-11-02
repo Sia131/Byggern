@@ -3,7 +3,7 @@
 
 #include "node2_motor.h"
 
-#define SCALING_FACTOR 128
+#define SCALING_FACTOR 129
 #define MAX_INT INT16_MAX
 #define MAX_LONG INT32_MAX
 #define MAX_I_TERM (MAX_LONG)/2

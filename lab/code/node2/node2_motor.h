@@ -38,11 +38,15 @@ void motor_reset_encoder();
 /*remaps slider from 0 to 100, over to -255 to 255*/
 uint8_t right_slider_remapping(USER_DATA *user_data);
 
+
+/*takes a value from -32768 to 32767
+  scales it down to -255 to 255
+  and send that over to be converted to analouge signal */ 
 void slider_to_u(USER_DATA *user_data);
 
-uint8_t right_slider_remapping(USER_DATA *user_data);
+//uint8_t right_slider_remapping(USER_DATA *user_data);
 
-void slider_to_u(USER_DATA *user_data);
+//void slider_to_u(USER_DATA *user_data);
 
 
 #endif

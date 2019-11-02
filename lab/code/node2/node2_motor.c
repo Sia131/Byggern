@@ -61,22 +61,25 @@ int16_t motor_read_encoder(){
 
 void motor_set_u(int16_t value){
     motor_enable();
+    value = value/129;
+    uint8_t new_value;
     if (value < -10){
         motor_set_direction(-1);
-        dac_send_analogue((uint8_t) ((-value) & 0xFF));
+        value = -value;
+        new_value = value;
     }
-    else if (value > 10){
+    else if(value > 10){
         motor_set_direction(1);
-        dac_send_analogue((uint8_t) ((value) & 0xFF));
+        new_value = value;
     }
     else{
-        dac_send_analogue(0);
+        new_value = 0;
     }
+    printf("%d \r\n", new_value);
+    dac_send_analogue(new_value);
 }
 
-
 /*
-
 uint8_t right_slider_remapping(USER_DATA *user_data){
     int slider = user_data->right_analog;
     if (slider > 50){

@@ -20,9 +20,10 @@ int16_t slider_to_encoder(int value){
     return 85.94 * value;
 }
 
+
 void controller_set_reference(int16_t r){
-    //r = slider_to_encoder(r);
-    ctrl.speed = r;
+    r = slider_to_encoder(r);
+    ctrl.r = r;
 }
 
 void reset_integrator(){
@@ -34,12 +35,16 @@ int16_t controller_get_reference(){
 }
 
 
+
 void controller_update(){
-    int16_t error, p,d;
+    int16_t error,p,d;
     int32_t i, u, temp;
 
     int16_t measurment = - motor_read_encoder();
     error = ctrl.r - measurment;
+    //printf("%d \r\n", error);
+
+
 
     //proportional term
     if(error > ctrl.maxE){
@@ -53,34 +58,37 @@ void controller_update(){
     }
 
     //intergral term 
+    
     temp = ctrl.sumE + error;
+    
     if (temp > ctrl.maxSumE){
         ctrl.sumE = ctrl.maxSumE;
         i = MAX_I_TERM;
     }
     else if(temp < -ctrl.maxSumE){
-        ctrl.sumE = ctrl.maxSumE;
+        ctrl.sumE = -ctrl.maxSumE;
         i = -MAX_I_TERM;
     }
     else{
         ctrl.sumE = temp;
         i = ctrl.K_i * ctrl.sumE;
     }
+
+    printf("%d \r\n", ctrl.sumE);
     
 
-    //derivative 
-    d = ctrl.K_d * (error-ctrl.prev_error);
-    ctrl.prev_error = error;
 
+    u = p + i;
 
-    u = (p + i + d)/SCALING_FACTOR;
-
+    
     if (u > MAX_INT){
         u = MAX_INT;
     }
     if (u < -MAX_INT){
         u = -MAX_INT;
     }
-    motor_set_u((int16_t)u);
+
+    //printf("%d \r\n", u);
+    //motor_set_u((int16_t)u);
     
 }

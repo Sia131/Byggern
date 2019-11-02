@@ -1,5 +1,5 @@
 #include "node2_controller.h"
-
+#include <util/delay.h>
 
 void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
     ctrl.K_p = K_p;
@@ -14,16 +14,17 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
     ctrl.maxSumE = MAX_I_TERM / (ctrl.K_i + 1);
 
     ctrl.speed = 50;
+    motor_init();
 }
 
 int16_t slider_to_encoder(int value){
     return 85.94 * value;
 }
 
-
+/*takes value from zero to hundred*/
 void controller_set_reference(int16_t r){
-    r = slider_to_encoder(r);
-    ctrl.r = r;
+    int16_t value = slider_to_encoder(r);
+    ctrl.r = value;
 }
 
 void reset_integrator(){
@@ -42,9 +43,7 @@ void controller_update(){
 
     int16_t measurment = - motor_read_encoder();
     error = ctrl.r - measurment;
-    //printf("%d \r\n", error);
-
-
+    printf("%d \r\n", error);
 
     //proportional term
     if(error > ctrl.maxE){
@@ -56,7 +55,6 @@ void controller_update(){
     else {
         p = ctrl.K_p * error;
     }
-
     //intergral term 
     
     temp = ctrl.sumE + error;
@@ -73,13 +71,11 @@ void controller_update(){
         ctrl.sumE = temp;
         i = ctrl.K_i * ctrl.sumE;
     }
-
-    printf("%d \r\n", ctrl.sumE);
     
-
-
-    u = p + i;
-
+  
+    d = ctrl.K_d * (error - ctrl.prev_error);
+    ctrl.prev_error = error;
+    u = p + i + d;
     
     if (u > MAX_INT){
         u = MAX_INT;
@@ -87,8 +83,9 @@ void controller_update(){
     if (u < -MAX_INT){
         u = -MAX_INT;
     }
-
-    //printf("%d \r\n", u);
-    //motor_set_u((int16_t)u);
-    
+    //printf("%d \r\n",u);
+    motor_set_u((int16_t)u);
+    //_delay_ms(100);
 }
+
+

@@ -8,7 +8,6 @@
 #include "node2_dac.h"
 #include "node2_controller.h"
 
-#define MAX UINT8_MAX
 
 int main(){
 
@@ -16,12 +15,11 @@ int main(){
     can_init();
     pwm_init();
     adc_init();
-    motor_init();
-    controller_init(4,0,2);
-    controller_set_reference(50);
+
+
+    
 
     while(1){
-        controller_update();
 
     }
     return 0;

@@ -2,6 +2,7 @@
 #define NODDE2_CONTROLLER_H
 
 #include "node2_motor.h"
+#include "node2_input_com.h"
 
 #define SCALING_FACTOR 129
 #define MAX_INT INT16_MAX
@@ -38,7 +39,6 @@ int16_t controller_get_reference();
 void controller_update();
 
 int16_t slider_to_encoder(int value);
-
 
 
 

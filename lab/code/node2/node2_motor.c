@@ -18,7 +18,7 @@ void motor_init(){
     DDRH |= (1 << EN);
 
     motor_reset_encoder();
-    motor_disable();
+    motor_enable();
 }
 
 void motor_enable(){
@@ -60,7 +60,6 @@ int16_t motor_read_encoder(){
 }
 
 void motor_set_u(int16_t value){
-    motor_enable();
     value = value/129;
     uint8_t new_value;
     if (value < -10){
@@ -75,7 +74,6 @@ void motor_set_u(int16_t value){
     else{
         new_value = 0;
     }
-    printf("%d \r\n", new_value);
     dac_send_analogue(new_value);
 }
 

@@ -19,8 +19,6 @@ int main(){
     controller_set_reference(0);
     USER_DATA user_data; 
 
-
-
     
 
     while(1){
@@ -28,7 +26,9 @@ int main(){
         input_com_receive_data(&user_data);
         controller_set_reference(user_data.x_analog);
         controller_update();
+        
     
+       
     }
     
     return 0;

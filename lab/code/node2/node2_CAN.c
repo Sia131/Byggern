@@ -37,7 +37,7 @@ void can_intr_init(){
 
     received = 0;
     //Enable the receive interrup on buffer 0, set all other interups to disabled
-    mcp_bit_modify(MCP_CANINTE, 0xFF, 0x01);
+    //mcp_bit_modify(MCP_CANINTE, 0xFF, 0x01);
 }
 
 void can_init(){

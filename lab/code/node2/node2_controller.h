@@ -18,7 +18,6 @@ typedef struct CONTROLLER_DATA{
     int16_t K_d;
     int16_t maxE;
     int32_t maxSumE;
-    int16_t speed;
 }CONTROLLER_DATA;
 
 static CONTROLLER_DATA ctrl;
@@ -29,16 +28,15 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d);
 /*sets the reference of the controller */
 void controller_set_reference(int16_t r);
 
-/*resets the integrator*/
-void reset_integrator();
-
 /*return the refernece value */
 int16_t controller_get_reference();
+
+/*resets the integrator*/
+void reset_integrator();
 
 /*updates the controller */
 void controller_update();
 
-int16_t slider_to_encoder(int value);
 
 
 

@@ -19,6 +19,7 @@ void motor_init(){
 
     motor_reset_encoder();
     motor_enable();
+    motor_set_u(0);
 }
 
 void motor_enable(){
@@ -56,7 +57,7 @@ int16_t motor_read_encoder(){
     encoder |= MOTOR_ENC;
     MOTOR_CONFIG |= (1 << OE);
 
-    return encoder;
+    return (-encoder);
 }
 
 void motor_set_u(int16_t value){

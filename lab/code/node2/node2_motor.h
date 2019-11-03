@@ -29,7 +29,8 @@ void motor_set_direction(int dir);
 /*sets the actuator input value to motor*/
 void motor_set_u(int16_t value);
 
-/*reads the encoder value*/
+/*reads the encoder value
+postive value towards right*/
 int16_t motor_read_encoder();
 
 /*resets the encoder*/

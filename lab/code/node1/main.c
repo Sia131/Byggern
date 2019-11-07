@@ -18,15 +18,9 @@ int main(void){
 	can_init();
 	JOYSTICK joystick;
 
-	while (1) {
-		
-		input_com_send_data();
-		_delay_ms(20);
-			
-	//get_joystick_values(&joystick);
-	//printf("%5d \r\n", joystick.x_analog);
-	
-	}
+	menu_loop();
+
+
 	return 0; 
 
 }

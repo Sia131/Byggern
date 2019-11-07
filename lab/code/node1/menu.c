@@ -6,7 +6,7 @@
 #include "node1_slider.h"
 #include "node1_oled.h"
 #include "menu.h"
-
+#include "node1_CAN.h"
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
 static menu_node_t* node_play_game;
@@ -55,8 +55,8 @@ void create_linked_list(){
 
     menu_node_init(node_home, "1. Enter Main Menu", 2, NULL, node_play_game, node_home, node_exit, &print_menu);
     menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
-    menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_settings, NULL);
-    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_settings, NULL);
+    menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_settings, &game_play);
+    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_settings, &print_scores);
     menu_node_init(node_settings, "3. Settings", 3, node_home, node_calibrate_joystick, node_play_game, node_settings, &print_menu);
     menu_node_init(node_calibrate_joystick, "1. Calibrate Joystick", 2, node_settings, NULL, node_calibrate_joystick, node_set_brightness, NULL);   
     menu_node_init(node_set_brightness, "2. Set brightness", 2, node_settings, NULL, node_calibrate_joystick, node_set_brightness, NULL);
@@ -79,6 +79,15 @@ void create_linked_list(){
     node_set_brightness->nxt = NULL;
     node_set_brightness->prv = node_calibrate_joystick;
 
+}
+
+void print_scores(){
+    oled_clear();
+    oled_write_word("Highscore list");
+    oled_goto_pos(1,0);
+    for (int i = 0; i < 3;i++){
+        //insert_score()
+    }
 }
 
 void print_loading_screen() {
@@ -130,7 +139,7 @@ void print_menu(menu_node_t* node) {
 }
 
 
-void menu_init(){
+void menu_loop(){
     create_linked_list();
     //printf("%s\n", node_set_brightness->parent->name);
     volatile int joystick_pos = 0;
@@ -188,12 +197,15 @@ void menu_init(){
             _delay_ms(200);
         }
         oled_clear_arrow(joystick_pos,0);
-    }
-    _delay_ms(3000);
-    print_settings();
-}
 
-void menu_loop(){
+        if (can_interrupt(){
+            can_receive(msg);
+            game_over();
+            _delay_ms(2000);
+            current_node = node_home;
+        }
+
+    }
 
 }
 

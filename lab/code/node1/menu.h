@@ -26,13 +26,14 @@ void create_linked_list();
 
 void print_loading_screen();
 
+void print_scores();
 void print_settings();
 
 void print_menu();
 
 void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t* parent,menu_node_t* first_child, menu_node_t* head, menu_node_t* tail, void* action);
 
-void menu_init();
+void menu_loop();
 
 void menu_get_position(int *position, JOYSTICK* joystick);
 

@@ -1,12 +1,10 @@
+#ifndef NODE2_CAN_H
+#define NODE2_CAN_H
+
 //#include <avr/io.h>
 //#include "mcp2515.h"
-
 #include "node1_mcp.h"
 
-
-
-#ifndef NODE1_CAN_H_
-#define NODE1_CAN_H_
 static uint8_t received;
 
 

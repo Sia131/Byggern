@@ -10,13 +10,16 @@
 #include "menu.h"
 #include "node1_CAN.h"
 #include "node1_input_com.h"
-
+#include "sound.h"
 
 int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
-	can_init();
+	oled_init();
 	JOYSTICK joystick;
+	menu_init();
+	can_init();
+	pwm_init();
 
 	while (1) {
 		
@@ -25,6 +28,9 @@ int main(void){
 			
 	//get_joystick_values(&joystick);
 	//printf("%5d \r\n", joystick.x_analog);
+	
+
+	//pwm_set_ms(10);
 	
 	}
 	return 0; 

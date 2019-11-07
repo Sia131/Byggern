@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "node2_pwm.h": "c",
+        "node2_controller.h": "c"
+    }
+}

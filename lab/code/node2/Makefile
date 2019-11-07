@@ -1,5 +1,5 @@
 # List all source files to be compiled; separate with space
-SOURCE_FILES := main.c node2_USART.c node2_SPI.c mcp2515.h node2_mcp.c node2_CAN.c node2_input_com.c node2_pwm.c node2_adc.c TWI_Master.c node2_dac.c node2_motor.c node2_controller.c
+SOURCE_FILES := main.c node2_USART.c node2_SPI.c mcp2515.h node2_mcp.c node2_CAN.c node2_input_com.c node2_pwm.c node2_adc.c TWI_Master.c node2_dac.c node2_motor.c node2_controller.c sound.c node2_solenoid.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes

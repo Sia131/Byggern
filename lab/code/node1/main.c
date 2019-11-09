@@ -19,12 +19,11 @@ int main(void){
 	JOYSTICK joystick;
 	menu_init();
 	can_init();
-	pwm_init();
 
 	while (1) {
 		
-		input_com_send_data();
-		_delay_ms(20);
+		//input_com_send_data();
+		//_delay_ms(20);
 			
 	//get_joystick_values(&joystick);
 	//printf("%5d \r\n", joystick.x_analog);

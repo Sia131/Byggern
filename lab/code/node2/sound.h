@@ -10,9 +10,9 @@ void music_delay(uint16_t delay);
 
 void sound_init();
 
-void sound_set_tone(int freq);
+void sound_set_tone(float freq);
 
-void sound_play_xp();
+//void sound_play_xp();
 
 
 #endif

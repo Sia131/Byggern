@@ -16,8 +16,6 @@
 // Define a special note, 'R', to represent a rest
 #define  R     0
 
-void pwm_init();
-void pwm_set_ms(double ms);
 
 
 

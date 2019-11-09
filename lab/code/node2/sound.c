@@ -1,5 +1,5 @@
 #include "sound.h"
-#include "xp.h"
+//#include "xp.h"
 #include <util/delay.h>
 
 void sound_init(){
@@ -9,34 +9,30 @@ void sound_init(){
 
     /*clear OC3A on compare match set OC3A at BOTTOM
     non-inverting */
-    TCCR3A = (1 << COM3A1);
+    TCCR3A = (1 << COM3A0);
 
     /*Mode 14 -Fast PWM
     */
-    TCCR3A |= (1 << WGM31);
+    //TCCR3A |= (1 << WGM31);
     TCCR3B |= (1 << WGM33) | (1 << WGM32);
 
     /*select clock speed
     Prescale = 8 */
-    TCCR3B |= (1 << CS32) | (1 << CS30);
-    //TCCR3B |= (1 << CS30);
+    TCCR3B |= (1 << CS31) | ( 1 << CS30);
 
-    //ICR3 = 39999;
-
-    //sound_set_tone(4000);
+    sound_set_tone(1);
 }
 
-void sound_set_tone(int freq){
+/*the range of the sound should be between 380Hz to 5kHz*/
+void sound_set_tone(float freq){
     //float period = 1 / freq;
-    freq = 160000/(64 * freq) - 1;
-    //freq = 62499 * freq;
-    ICR3 = freq;
-    ICR3 = freq;
-    
-    OCR3A = ICR3/2;
+    float freq_mcu = 16000000;
+    int value = (freq_mcu/(2*64*freq)) - 1;
+    ICR3 = value;
+    //OCR3A = ICR3/2;
 }
 
-
+/*
 void sound_play_xp(){
     for (int i=0; i < sounddata_length;i++){
         int data = pgm_read_byte(&sounddata_data[i]);
@@ -45,4 +41,6 @@ void sound_play_xp(){
     }
     //sound_set_tone(500);
 }
+*/
+
 

@@ -10,7 +10,7 @@
 #include "sound.h"
 #include <util/delay.h>
 #include "node2_solenoid.h"
-
+#include "node2_melody.h"
 
 
 int main(){
@@ -19,35 +19,15 @@ int main(){
     can_init();
     pwm_init();
     adc_init();
-    //controller_init(4,0,4);
-    //controller_set_reference(0);
-    solenoid_init();
+    sound_init();
 
-    //solenoid_activate();
+    //song1();
 
-
+    play_mario();
 
 
-    //USER_DATA user_data; 
-
-    //sound_init();
-
-    //sound_set_tone(15);
-    //_delay_ms(500);
-    //sound_set_tone(1);
-    //_delay_ms(500);
-    //sound_set_tone(5);
-
-    //sound_set_tone(11);
-
-    //sound_play_xp();
 
     while(1){
-        /*
-        input_com_receive_data(&user_data);
-        controller_set_reference(user_data.x_analog);
-        controller_update();
-       */
       
     }
     return 0;

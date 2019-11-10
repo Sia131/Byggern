@@ -37,7 +37,7 @@ void reset_integrator();
 /*updates the controller */
 void controller_update();
 
-
-
+/* sets the difficulty and initializes the controller */
+void controller_difficulty(uint8_t difficulty);
 
 #endif

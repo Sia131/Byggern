@@ -11,6 +11,7 @@
 #include <util/delay.h>
 #include "node2_solenoid.h"
 #include "node2_melody.h"
+#include "node2_game.h"
 
 
 int main(){
@@ -21,14 +22,8 @@ int main(){
     adc_init();
     sound_init();
 
-    //song1();
+    //play_underworld();
 
-    play_mario();
-
-
-
-    while(1){
-      
-    }
+    game_play();
     return 0;
 }

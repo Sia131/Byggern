@@ -13,7 +13,10 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
 
     ctrl.maxE = MAX_INT / (ctrl.K_p + 1);
     ctrl.maxSumE = MAX_I_TERM / (ctrl.K_i + 1);
-
+    for (int i =0; i < 40; i++){
+        motor_set_u(-40);
+        _delay_ms(1);
+    } 
 }
 
 /*takes value from zero to hundred*/
@@ -35,8 +38,8 @@ void controller_update(){
     int16_t error,p,d;
     int32_t i, u, temp;
 
-    int16_t measurment =  motor_read_encoder();
-    error = ctrl.r - measurment;
+    int16_t measurement =  motor_read_encoder();
+    error = ctrl.r - measurement;
     printf("%d \r\n", error);
 
     //proportional term
@@ -83,3 +86,15 @@ void controller_update(){
 }
 
 
+void controller_difficulty(uint8_t difficulty){
+    if (difficulty = 0){ //easy
+        controller_init(4,0,4);
+    }
+    if (difficulty = 1){ //medium
+        controller_init(8,0,4);
+    }
+    if (difficulty = 2){ //hard
+        controller_init(10,0,10);
+    }
+
+}

@@ -78,28 +78,3 @@ void motor_set_u(int16_t value){
     dac_send_analogue(new_value);
 }
 
-/*
-uint8_t right_slider_remapping(USER_DATA *user_data){
-    int slider = user_data->right_analog;
-    if (slider > 50){
-        slider = slider - 50;
-        return (uint8_t)(5.1 * slider);
-    }
-    else{
-        slider = slider - 50;
-        slider = slider * (-1);
-        return (uint8_t)(5.1 * slider);
-    }
-}
-
-void slider_to_u(USER_DATA *user_data){
-    int slider = user_data->right_analog;
-    uint8_t new_slider = right_slider_remapping(user_data);
-    if (slider > 50){
-        motor_set_u(new_slider, 1);
-    }
-    else{
-        motor_set_u(new_slider, -1);
-    }
-}
-*/

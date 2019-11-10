@@ -1,5 +1,4 @@
 #include "sound.h"
-//#include "xp.h"
 #include <util/delay.h>
 
 void sound_init(){
@@ -20,7 +19,6 @@ void sound_init(){
     Prescale = 8 */
     TCCR3B |= (1 << CS31) | ( 1 << CS30);
 
-    sound_set_tone(1);
 }
 
 /*the range of the sound should be between 380Hz to 5kHz*/
@@ -32,15 +30,5 @@ void sound_set_tone(float freq){
     //OCR3A = ICR3/2;
 }
 
-/*
-void sound_play_xp(){
-    for (int i=0; i < sounddata_length;i++){
-        int data = pgm_read_byte(&sounddata_data[i]);
-        _delay_ms(1/8);
-        sound_set_tone(data);
-    }
-    //sound_set_tone(500);
-}
-*/
 
 

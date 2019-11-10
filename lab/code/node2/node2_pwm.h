@@ -11,6 +11,6 @@ void pwm_set_angle(double angle);
 
 void pwm_set_ms(double ms);
 
-void joystick_to_servo();
+void joystick_to_servo(uint8_t value);
 #endif
 

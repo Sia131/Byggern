@@ -39,10 +39,7 @@ void pwm_set_angle(double angle){
 }
 
 
-void joystick_to_servo(){
-    USER_DATA user_data;
-    input_com_receive_data(&user_data);
-    double angle = 1.8*(user_data.x_analog);
+void joystick_to_servo(uint8_t value){
+    double angle = 1.8*value;
     pwm_set_angle(angle);
-    
 }

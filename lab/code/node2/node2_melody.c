@@ -32,7 +32,6 @@ void play_mario() {
       for(int i = 1; i < pauseBetweenNotes; i++){
           _delay_ms(1);
       }
- 
     }
 }
 
@@ -55,7 +54,10 @@ void play_underworld(){
       for(int i = 1; i < pauseBetweenNotes; i++){
           _delay_ms(1);
       }
- 
     }
-
 }
+
+
+
+
+

@@ -40,3 +40,9 @@ int solenoid_get_shot(){
 void solenoid_clear_shot(){
     solenoid_shot = 0;
 }
+
+void solenoid_update_shot(uint8_t value){
+    if (value == 1){
+        solenoid_shoot();
+    }
+}

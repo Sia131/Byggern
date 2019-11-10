@@ -20,7 +20,7 @@ int solenoid_get_shot();
 
 void solenoid_clear_shot();
 
-
+void solenoid_update_shot(uint8_t value);
 
 
 

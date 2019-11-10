@@ -7,14 +7,20 @@
 #include "node1_oled.h"
 #include "menu.h"
 #include "node1_CAN.h"
+#include "game.h"
+
+static menu_node_t* current_node;
+
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
 static menu_node_t* node_play_game;
 static menu_node_t* node_highscores;
 static menu_node_t* node_settings;
 static menu_node_t* node_calibrate_joystick;
-static menu_node_t* node_set_brightness;
-static menu_node_t* current_node;
+static menu_node_t* node_set_difficulty;
+static menu_node_t* node_easy_setting;
+static menu_node_t* node_medium_setting;
+static menu_node_t* node_hard_setting;
 
 
 void oled_print_arrow(uint8_t row, uint8_t col){
@@ -58,8 +64,14 @@ void create_linked_list(){
     menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_settings, &game_play);
     menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_settings, &print_scores);
     menu_node_init(node_settings, "3. Settings", 3, node_home, node_calibrate_joystick, node_play_game, node_settings, &print_menu);
-    menu_node_init(node_calibrate_joystick, "1. Calibrate Joystick", 2, node_settings, NULL, node_calibrate_joystick, node_set_brightness, NULL);   
-    menu_node_init(node_set_brightness, "2. Set brightness", 2, node_settings, NULL, node_calibrate_joystick, node_set_brightness, NULL);
+    menu_node_init(node_calibrate_joystick, "1. Calibrate Joystick", 2, node_settings, NULL, node_calibrate_joystick, node_set_difficulty, NULL);   
+    menu_node_init(node_set_difficulty, "2. Set difficulty", 2, node_settings, NULL, node_calibrate_joystick, node_set_difficulty, NULL);
+
+
+void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t* parent,menu_node_t* first_child, menu_node_t* head, menu_node_t* tail, void* action);
+    menu_node_init(node_easy_setting, "1. Easy", 3, node_settings, NULL, node_easy_setting, node_hard_setting, &send_difficulty(0));
+    menu_node_init(node_medium_setting, "2. Medium" 3, node_settings, NULL, node_easy_setting, node_hard_setting, &send_difficulty(1));
+    menu_node_init(node_hard_setting, "3. Hard", 3, node_settings, NULL, node_easy_setting, node_hard_setting, &send_difficulty(2));
 
     //Create linked lists
     node_home->nxt = node_exit;
@@ -74,10 +86,20 @@ void create_linked_list(){
     node_settings->nxt = NULL;
     node_settings->prv = node_highscores;
 
-    node_calibrate_joystick->nxt = node_set_brightness;
+    node_calibrate_joystick->nxt = node_set_difficulty;
     node_calibrate_joystick->prv = NULL;
-    node_set_brightness->nxt = NULL;
-    node_set_brightness->prv = node_calibrate_joystick;
+    node_set_difficulty->nxt = NULL;
+    node_set_difficulty->prv = node_calibrate_joystick;
+
+    node_easy_setting->nxt = node_medium_setting;
+    node_easy_setting->prev = NULL;
+
+    node_medium_setting->nxt = node_hard_setting;
+    node_medium_setting->prev = node_easy_setting;
+
+    node_hard_setting->nxt = NULL;
+    node_hard_setting->prev = node_medium_setting;
+
 
 }
 
@@ -138,17 +160,15 @@ void print_menu(menu_node_t* node) {
     oled_write_word(node->tail->name);
 }
 
-
 void menu_loop(){
     create_linked_list();
-    //printf("%s\n", node_set_brightness->parent->name);
+    //printf("%s\n", node_set_difficulty->parent->name);
     volatile int joystick_pos = 0;
     JOYSTICK menu_joystick;
     current_node = node_home;
     int linked_list_len = current_node->num_siblings;
     print_menu(current_node);
     while(1){
-
         get_joystick_values(&menu_joystick);
         input_com_send_data();
         _delay_ms(20);
@@ -200,20 +220,7 @@ void menu_loop(){
             _delay_ms(200);
         }
         oled_clear_arrow(joystick_pos,0);
-<<<<<<< HEAD
-    }
-    //_delay_ms(3000);
-    print_settings();
-}
-=======
->>>>>>> origin/Highscores
 
-        if (can_interrupt(){
-            can_receive(msg);
-            game_over();
-            _delay_ms(2000);
-            current_node = node_home;
-        }
 
     }
 

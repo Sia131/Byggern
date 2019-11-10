@@ -17,21 +17,8 @@ int main(void){
 	memory_map_init();
 	oled_init();
 	JOYSTICK joystick;
-	menu_init();
 	can_init();
-
-	while (1) {
-		
-		//input_com_send_data();
-		//_delay_ms(20);
-			
-	//get_joystick_values(&joystick);
-	//printf("%5d \r\n", joystick.x_analog);
-	
-
-	//pwm_set_ms(10);
-	
-	}
+	menu_init(); //main  loop inside here
 	return 0; 
 
 }

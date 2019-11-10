@@ -6,6 +6,7 @@
 #include "node1_slider.h"
 #include "node1_oled.h"
 #include "menu.h"
+#include "node1_CAN.h"
 
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
@@ -139,7 +140,10 @@ void menu_init(){
     int linked_list_len = current_node->num_siblings;
     print_menu(current_node);
     while(1){
+
         get_joystick_values(&menu_joystick);
+        input_com_send_data();
+        _delay_ms(20);
         if (menu_joystick.y_direction == UP) {
             if (joystick_pos == 0){
                 joystick_pos = linked_list_len-1;
@@ -171,15 +175,15 @@ void menu_init(){
         linked_list_len = current_node->num_siblings;
         joystick_pos = abs(joystick_pos % linked_list_len);
 
-        printf("pos %d\t", joystick_pos);
-        printf("node is at %s\n", current_node->name);
+        //printf("pos %d\t", joystick_pos);
+        //printf("node is at %s\n", current_node->name);
 
         oled_print_arrow(joystick_pos,0);
 
         uint8_t neutral = 50;
         int diff = abs(((int)neutral - (int)menu_joystick.y_analog)/5);
         int delay_time = (1000/(diff+1));
-        printf("speed: %d\n", delay_time);
+        //printf("speed: %d\n", delay_time);
         if (diff > 1) {
             for (int i = 0; i < delay_time; i++) {
                 _delay_ms(1);
@@ -189,7 +193,7 @@ void menu_init(){
         }
         oled_clear_arrow(joystick_pos,0);
     }
-    _delay_ms(3000);
+    //_delay_ms(3000);
     print_settings();
 }
 

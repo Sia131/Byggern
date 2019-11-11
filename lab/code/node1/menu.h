@@ -27,6 +27,7 @@ void create_linked_list();
 void print_loading_screen();
 
 void print_scores();
+
 void print_settings();
 
 void print_menu();

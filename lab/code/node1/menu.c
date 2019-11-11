@@ -168,6 +168,8 @@ void menu_init(){
     print_menu(current_node);
     while(1){
         get_joystick_values(&menu_joystick);
+        //
+        //can_write()
         if (menu_joystick.y_direction == UP) {
             if (joystick_pos == 0){
                 joystick_pos = linked_list_len-1;

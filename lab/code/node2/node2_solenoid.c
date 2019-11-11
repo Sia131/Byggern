@@ -20,9 +20,7 @@ void solenoid_activate(){
 void solenoid_init(){
     /*set pin as output */
     SOLENOID_DDR |= (1 << SOLENOID_PIN);
-
     solenoid_shot = 0;
-
     solenoid_deactivate();
 }
 
@@ -42,7 +40,7 @@ void solenoid_clear_shot(){
 }
 
 void solenoid_update_shot(uint8_t value){
-    if (value == 1){
+    if (value > 0){
         solenoid_shoot();
     }
 }

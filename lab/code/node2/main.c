@@ -21,9 +21,10 @@ int main(){
     pwm_init();
     adc_init();
     sound_init();
-
+    solenoid_init();
     //play_underworld();
 
     game_play();
+
     return 0;
 }

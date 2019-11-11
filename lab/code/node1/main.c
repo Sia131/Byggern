@@ -15,15 +15,23 @@
 
 int main(void){
 	
+	
 	USART_Init(MYUBRR);
 	memory_map_init();
-	oled_init();
-	JOYSTICK joystick;
-	//SRAM_test();
-	//can_init();
-	menu_init(); //main  loop inside here
+	oled_init();;
+	can_init();
+	//menu_init(); //main  loop inside here
+
+
+
+
+	while(1){
+		input_com_send_data();
+		printf("ddd \r\n");
+	}
 
 	return 0; 
+	
 
 }
 

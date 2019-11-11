@@ -39,7 +39,7 @@ void menu_init();
 
 void menu_get_position(int *position, JOYSTICK* joystick);
 
-void game_finished(menu_node_t* node);
+void game_finished();
 
 void play(menu_node_t* node);
 

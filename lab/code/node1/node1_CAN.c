@@ -25,6 +25,7 @@ void can_init(){
     spi_init();
     mcp_reset();
 
+
 	// tester om jeg er i configure mode
 	uint8_t mode = mcp_read(MCP_CANSTAT);
 	if ((mode & MODE_MASK) != MODE_CONFIG) {

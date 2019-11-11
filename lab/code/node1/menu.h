@@ -35,6 +35,14 @@ void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t
 
 void menu_loop();
 
+void menu_init();
+
 void menu_get_position(int *position, JOYSTICK* joystick);
+
+void game_finished(menu_node_t* node);
+
+void play(menu_node_t* node);
+
+void send_difficulty(menu_node_t* node);
 
 #endif

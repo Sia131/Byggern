@@ -73,8 +73,8 @@ void create_linked_list(){
     menu_node_init(node_home, "1. Enter Main Menu", 2, NULL, node_play_game, node_home, node_exit, &print_menu);
     menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
 */
-    menu_node_init(node_play_game, "1. Play Game", 3, node_home, node_playing, node_play_game, node_set_difficulty, &play);
-    menu_node_init(node_highscores, "2. Highscores", 3, node_home, node_playing, node_play_game, node_set_difficulty, &play_song);
+    menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_set_difficulty, &play);
+    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_set_difficulty, &play_song);
     menu_node_init(node_set_difficulty, "3. Set difficulty", 3, node_home, node_easy_setting, node_play_game, node_set_difficulty, &print_menu);
     //menu_node_init(node_playing, "Playing Game",1,node_play_game,NULL,NULL,NULL, &play);
     //menu_node_init(node_song, "Playing song",1,node_highscores,NULL,NULL,NULL, &play_song);
@@ -90,27 +90,23 @@ void create_linked_list(){
     node_home->prv = NULL;
     node_exit->nxt = NULL;
     node_exit->prv = node_home;
-*/        printf("node is at %s\n", current_node->name);
-
-    node_play_game->nxt = node_        printf("node is at %s\n", current_node->name);
-highscores;
-    node_play_game->prv = NULL;        printf("node is at %s\n", current_node->name);
-
-    node_highscores->nxt = node        printf("node is at %s\n", current_node->name);
-_set_difficulty;
+*/
+    node_play_game->nxt = node_highscores;
+    node_play_game->prv = NULL;
+    node_highscores->nxt = node_set_difficulty;
     node_highscores->prv = node_play_game;
     node_set_difficulty->nxt = NULL;
     node_set_difficulty->prv = node_highscores;
 
-    node_easy_setting->nxt = node_medium_setting;play_underworld
-    node_easy_setting->prv = NULL;play_underworld
-play_underworld
-    node_medium_setting->nxt = node_hard_setting;play_underworld
-    node_medium_setting->prv = node_easy_setting;play_underworld
-play_underworld
-    node_hard_setting->nxt = NULL;play_underworld
-    node_hard_setting->prv = node_medium_setting;play_underworld
-play_underworld
+    node_easy_setting->nxt = node_medium_setting;
+    node_easy_setting->prv = NULL;
+
+    node_medium_setting->nxt = node_hard_setting;
+    node_medium_setting->prv = node_easy_setting;
+
+    node_hard_setting->nxt = NULL;
+    node_hard_setting->prv = node_medium_setting;
+
     node_playing->nxt = NULL;
     node_playing->prv = NULL;
 
@@ -201,26 +197,18 @@ void menu_init(){
                 joystick_pos = 0;
             } else if (current_node->first_child == NULL){
                 (*current_node->action)();
-            }          
-
-
-            _delay_ms(100);
+            }
         }
         if ((menu_joystick.x_direction == LEFT) && (current_node->parent != NULL)){
             current_node = current_node->parent;
             (*current_node->action)(current_node);
             joystick_pos = 0;
-        }        printf("node is at %s\n", current_node->name);
-
-        linked_list        printf("node is at %s\n", current_node->name);
-_len = current_node->num_siblings;
-        joystick_po        printf("node is at %s\n", current_node->name);
-s = abs(joystick_pos % linked_list_len);
-        printf("node is at %s\n", current_node->name);
+        }
+        linked_list_len = current_node->num_siblings;
+        joystick_pos = abs(joystick_pos % linked_list_len);
 
         printf("pos %d\t", joystick_pos);
         printf("node is at %s\n", current_node->name);
-        //printf("parent: %s\n", current_node->parent);
         oled_print_arrow(joystick_pos,0);
 
         uint8_t neutral = 50;
@@ -273,8 +261,6 @@ void send_difficulty(menu_node_t* node){ //not currently working
         oled_clear_line(4);
 	}
     oled_clear();
-    current_node = node->parent->parent;
-    print_menu(node_play_game);
     _delay_ms(500);
     /*send the message over the can buss
     MESSAGE message;
@@ -288,7 +274,7 @@ void send_difficulty(menu_node_t* node){ //not currently working
 
 
 
-void play(menu_node_t* node) {
+void play() {
     printf("Playing ping pong\n");
     oled_clear();
     oled_goto_pos(4,4);
@@ -331,11 +317,10 @@ void play(menu_node_t* node) {
 
 void play_song(menu_node_t* node){
     MESSAGE msg;
-    msg.id = 2;
+    msg.id = 4;
     msg.length = 1;
     msg.data[0] = 4;
     can_write(&msg);
-    current_node = current_node->parent;
     _delay_ms(5000);
 }
 

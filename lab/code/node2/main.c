@@ -23,8 +23,8 @@ int main(){
     sound_init();
     solenoid_init();
     //play_underworld();
-
-    //printf("testing");
+    controller_init(4,0,4);
+    printf("main");
     game_play();
     return 0;
 }

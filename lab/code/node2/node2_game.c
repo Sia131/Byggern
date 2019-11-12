@@ -13,36 +13,44 @@
 #include "node2_melody.h"
  
  void game_play(){
-    int difficulty = 0;
-    controller_difficulty(difficulty);
+    //controller_init(4,0,4);
+    //int difficulty = 0;
+    //controller_difficulty(difficulty);
     MESSAGE can_message;
     USER_DATA user_data;
     //uint8_t internal_state = 0; Maybe use this??
+
     while(1){
             can_receive(&can_message);
             if (can_message.id == 0){ //msg containing difficulty
                 printf("difficulty");
-                difficulty = can_message.data[0];
+                int difficulty = can_message.data[0];
                 controller_difficulty(difficulty);
                 continue;   
             }
             if (can_message.id == 1){ // userdata
                 put_can_message_into_user_data(&can_message, &user_data);
                 printf("userdata received, x_analog = %d\n",user_data.x_analog);
-                /*joystick_to_servo(user_data.x_analog);
+                joystick_to_servo(user_data.x_analog);
                 controller_set_reference(user_data.x_analog);
                 controller_update();
                 solenoid_update_shot(user_data.joystick_button);
                 printf("right: %d  \r\n", user_data.joystick_button); 
-                */
-                //if IR_lys_set 
+                
+                //if (IR_lys_set)
+                  //  game_over(); 
                     // set can_message.id = 5 
                 continue;
             }
 
-            if (can_message.id == 2) { // play song
+            if (can_message.id == 4) { // play mario
                 printf("song\n\n");
                 play_mario();
+                //continue;
+            }
+            if (can_message.id == 5) { // play underworld
+                printf("song 2\n\n");
+                play_underworld();
                 //continue;
             }
             /*can_message.id = 5 { //game 

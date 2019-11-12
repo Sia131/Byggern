@@ -13,11 +13,11 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
 
     ctrl.maxE = MAX_INT / (ctrl.K_p + 1);
     ctrl.maxSumE = MAX_I_TERM / (ctrl.K_i + 1);
-
-    /*for (int i =0; i < 40; i++){
-        motor_set_u(-40);
+/*
+    for (int i =0; i < 400; i++){
+        motor_set_u(-50);
         _delay_ms(1);
-    }*/ 
+    } */
 }
 
 /*takes value from zero to hundred*/
@@ -81,7 +81,7 @@ void controller_update(){
     if (u < -MAX_INT){
         u = -MAX_INT;
     }
-    //printf("%d \r\n",u);
+    printf("%d \r\n",u);
     motor_set_u((int16_t)u);
     //_delay_ms(100);
 }
@@ -97,5 +97,5 @@ void controller_difficulty(uint8_t difficulty){
     if (difficulty = 2){ //hard
         controller_init(10,0,10);
     }
-
+    
 }

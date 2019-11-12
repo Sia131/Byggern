@@ -42,6 +42,6 @@ void play();
 
 void play_song();
 
-void send_difficulty(menu_node_t* node);
+void send_difficulty();
 
 #endif

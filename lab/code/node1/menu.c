@@ -23,7 +23,7 @@ static menu_node_t* node_easy_setting;
 static menu_node_t* node_medium_setting;
 static menu_node_t* node_hard_setting;
 static menu_node_t* node_send_difficulty;
-static menu_node_t* node_song;
+static menu_node_t* node_play_song;
 
 
 
@@ -60,10 +60,7 @@ void create_linked_list(){
     node_highscores = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_set_difficulty = (menu_node_t*) malloc(sizeof(menu_node_t));
     current_node = (menu_node_t*) malloc(sizeof(menu_node_t));
-    node_playing = (menu_node_t*) malloc(sizeof(menu_node_t));
-    node_song = (menu_node_t*) malloc(sizeof(menu_node_t));
-
-    node_send_difficulty = (menu_node_t*) malloc(sizeof(menu_node_t));
+    node_play_song = (menu_node_t*) malloc(sizeof(menu_node_t));
 
 
     node_easy_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
@@ -73,16 +70,15 @@ void create_linked_list(){
     menu_node_init(node_home, "1. Enter Main Menu", 2, NULL, node_play_game, node_home, node_exit, &print_menu);
     menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
 */
-    menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_set_difficulty, &play);
-    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_set_difficulty, &play_song);
-    menu_node_init(node_set_difficulty, "3. Set difficulty", 3, node_home, node_easy_setting, node_play_game, node_set_difficulty, &print_menu);
-    //menu_node_init(node_playing, "Playing Game",1,node_play_game,NULL,NULL,NULL, &play);
-    //menu_node_init(node_song, "Playing song",1,node_highscores,NULL,NULL,NULL, &play_song);
-    menu_node_init(node_send_difficulty, "Send difficulty",1,node_set_difficulty,NULL,NULL,NULL, &send_difficulty);
+    menu_node_init(node_play_game, "1. Play Game", 4, node_home, NULL, node_play_game, node_play_song, &play);
+    menu_node_init(node_highscores, "2. Highscores", 4, node_home, NULL, node_play_game, node_play_song, &play_song);
+    menu_node_init(node_set_difficulty, "3. Set difficulty", 4, node_home, node_easy_setting, node_play_game, node_play_song, &print_menu);
+    menu_node_init(node_play_song, "4. Play Song", 4, node_home, NULL,node_play_game,node_play_song, &play_song);
 
-    menu_node_init(node_easy_setting, "1. Easy", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
-    menu_node_init(node_medium_setting, "2. Medium", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
-    menu_node_init(node_hard_setting, "3. Hard", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
+
+    menu_node_init(node_easy_setting, "1. Easy", 3, node_set_difficulty,NULL , node_easy_setting, node_hard_setting, &send_difficulty);
+    menu_node_init(node_medium_setting, "2. Medium", 3, node_set_difficulty,NULL , node_easy_setting, node_hard_setting, &send_difficulty);
+    menu_node_init(node_hard_setting, "3. Hard", 3, node_set_difficulty, NULL, node_easy_setting, node_hard_setting, &send_difficulty);
 
     //Create linked lists
     /*
@@ -95,8 +91,10 @@ void create_linked_list(){
     node_play_game->prv = NULL;
     node_highscores->nxt = node_set_difficulty;
     node_highscores->prv = node_play_game;
-    node_set_difficulty->nxt = NULL;
+    node_set_difficulty->nxt = node_play_song;
     node_set_difficulty->prv = node_highscores;
+    node_play_song->nxt = NULL;
+    node_play_song->prv = node_set_difficulty;
 
     node_easy_setting->nxt = node_medium_setting;
     node_easy_setting->prv = NULL;
@@ -227,18 +225,19 @@ void menu_init(){
     }
 }
 
-void send_difficulty(menu_node_t* node){ //not currently working
+void send_difficulty(){ //not currently working
     int difficulty = 0;
-    if (current_node->name == "1. Easy"){
-        int difficulty = 4;
+    if (current_node == node_easy_setting){
+        difficulty = 0;
     }
-    if (current_node->name == "2. Medium"){
-        int difficulty = 1;
+   if (current_node == node_medium_setting){
+        difficulty = 1;
     }
-    if (current_node->name == "3. Hard"){
-        int difficulty = 2;
+    if (current_node == node_hard_setting){
+        difficulty = 2;
     }
     printf("difficulty set to: %d", difficulty);
+    //printf("node is at: %s",current_node->name);
     
     oled_clear();
     oled_goto_pos(3,0);
@@ -262,14 +261,11 @@ void send_difficulty(menu_node_t* node){ //not currently working
 	}
     oled_clear();
     _delay_ms(500);
-    /*send the message over the can buss
     MESSAGE message;
-    message.id = 0;
+    message.id = 3;
     message.length = 1;
     message.data[0] = difficulty;
-    //printf("nodename: %s\r\n", current_node->name);
-    */
-    //can_write(&message);
+    can_write(&message);
 }
 
 

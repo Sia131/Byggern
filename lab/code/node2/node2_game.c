@@ -13,7 +13,7 @@
 #include "node2_melody.h"
  
  void game_play(){
-    //controller_init(4,0,4);
+    controller_init(3,0,12);
     //int difficulty = 0;
     //controller_difficulty(difficulty);
     MESSAGE can_message;
@@ -22,12 +22,7 @@
 
     while(1){
             can_receive(&can_message);
-            if (can_message.id == 0){ //msg containing difficulty
-                printf("difficulty");
-                int difficulty = can_message.data[0];
-                controller_difficulty(difficulty);
-                continue;   
-            }
+
             if (can_message.id == 1){ // userdata
                 put_can_message_into_user_data(&can_message, &user_data);
                 printf("userdata received, x_analog = %d\n",user_data.x_analog);
@@ -64,7 +59,12 @@
                 solenoid_clear_shot();
                 //can_send message that game is over
             }*/
-
+            if (can_message.id == 3){ //msg containing difficulty
+                printf("difficulty");
+                int difficulty = can_message.data[0];
+                controller_difficulty(difficulty);
+                continue;   
+            }
            }
 }
        

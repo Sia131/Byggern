@@ -90,23 +90,27 @@ void create_linked_list(){
     node_home->prv = NULL;
     node_exit->nxt = NULL;
     node_exit->prv = node_home;
-*/
-    node_play_game->nxt = node_highscores;
-    node_play_game->prv = NULL;
-    node_highscores->nxt = node_set_difficulty;
+*/        printf("node is at %s\n", current_node->name);
+
+    node_play_game->nxt = node_        printf("node is at %s\n", current_node->name);
+highscores;
+    node_play_game->prv = NULL;        printf("node is at %s\n", current_node->name);
+
+    node_highscores->nxt = node        printf("node is at %s\n", current_node->name);
+_set_difficulty;
     node_highscores->prv = node_play_game;
     node_set_difficulty->nxt = NULL;
     node_set_difficulty->prv = node_highscores;
 
-    node_easy_setting->nxt = node_medium_setting;
-    node_easy_setting->prv = NULL;
-
-    node_medium_setting->nxt = node_hard_setting;
-    node_medium_setting->prv = node_easy_setting;
-
-    node_hard_setting->nxt = NULL;
-    node_hard_setting->prv = node_medium_setting;
-
+    node_easy_setting->nxt = node_medium_setting;play_underworld
+    node_easy_setting->prv = NULL;play_underworld
+play_underworld
+    node_medium_setting->nxt = node_hard_setting;play_underworld
+    node_medium_setting->prv = node_easy_setting;play_underworld
+play_underworld
+    node_hard_setting->nxt = NULL;play_underworld
+    node_hard_setting->prv = node_medium_setting;play_underworld
+play_underworld
     node_playing->nxt = NULL;
     node_playing->prv = NULL;
 
@@ -190,19 +194,29 @@ void menu_init(){
                 current_node = current_node->nxt;
             }
         }
-        if ((menu_joystick.x_direction == RIGHT) && (current_node->first_child != NULL)){
-            (*current_node->action)(current_node->first_child);
-            current_node = current_node->first_child;
-            joystick_pos = 0;
+        if ((menu_joystick.x_direction == RIGHT) ){
+            if (current_node->first_child != NULL){
+                (*current_node->action)(current_node->first_child);
+                current_node = current_node->first_child;
+                joystick_pos = 0;
+            } else if (current_node->first_child == NULL){
+                (*current_node->action)();
+            }          
+
+
             _delay_ms(100);
         }
         if ((menu_joystick.x_direction == LEFT) && (current_node->parent != NULL)){
             current_node = current_node->parent;
             (*current_node->action)(current_node);
             joystick_pos = 0;
-        }
-        linked_list_len = current_node->num_siblings;
-        joystick_pos = abs(joystick_pos % linked_list_len);
+        }        printf("node is at %s\n", current_node->name);
+
+        linked_list        printf("node is at %s\n", current_node->name);
+_len = current_node->num_siblings;
+        joystick_po        printf("node is at %s\n", current_node->name);
+s = abs(joystick_pos % linked_list_len);
+        printf("node is at %s\n", current_node->name);
 
         printf("pos %d\t", joystick_pos);
         printf("node is at %s\n", current_node->name);

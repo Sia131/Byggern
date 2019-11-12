@@ -12,15 +12,17 @@
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
 static menu_node_t* node_play_game;
+static menu_node_t* node_playing;
+
 static menu_node_t* node_highscores;
-static menu_node_t* node_settings;
-static menu_node_t* node_calibrate_joystick;
 static menu_node_t* node_set_difficulty;
 static menu_node_t* current_node;
 
 static menu_node_t* node_easy_setting;
 static menu_node_t* node_medium_setting;
 static menu_node_t* node_hard_setting;
+static menu_node_t* node_send_difficulty;
+
 
 
 void oled_print_arrow(uint8_t row, uint8_t col){
@@ -54,47 +56,46 @@ void create_linked_list(){
     node_exit = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_play_game = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_highscores = (menu_node_t*) malloc(sizeof(menu_node_t));
-    node_settings = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_set_difficulty = (menu_node_t*) malloc(sizeof(menu_node_t));
-    node_calibrate_joystick = (menu_node_t*) malloc(sizeof(menu_node_t));
     current_node = (menu_node_t*) malloc(sizeof(menu_node_t));
+    node_playing = (menu_node_t*) malloc(sizeof(menu_node_t));
+
+    node_send_difficulty = (menu_node_t*) malloc(sizeof(menu_node_t));
 
 
     node_easy_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_medium_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_hard_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
-
+/*
     menu_node_init(node_home, "1. Enter Main Menu", 2, NULL, node_play_game, node_home, node_exit, &print_menu);
     menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
-    menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_settings, NULL);
-    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_settings, NULL);
-    menu_node_init(node_settings, "3. Settings", 3, node_home, node_calibrate_joystick, node_play_game, node_settings, &print_menu);
-    menu_node_init(node_calibrate_joystick, "1. Calibrate Joystick", 2, node_settings, NULL, node_calibrate_joystick, node_set_difficulty, NULL);   
-    menu_node_init(node_set_difficulty, "2. Set difficulty", 2, node_settings, node_easy_setting, node_calibrate_joystick, node_set_difficulty, &print_menu);
+*/
+    menu_node_init(node_play_game, "1. Play Game", 3, node_home, node_playing, node_play_game, node_set_difficulty, &play);
+    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_set_difficulty, NULL);
+    menu_node_init(node_set_difficulty, "3. Set difficulty", 3, node_home, node_easy_setting, node_play_game, node_set_difficulty, &print_menu);
 
-    menu_node_init(node_easy_setting, "1. Easy", 3, node_settings, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
-    menu_node_init(node_medium_setting, "2. Medium", 3, node_settings, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
-    menu_node_init(node_hard_setting, "3. Hard", 3, node_settings, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
+    menu_node_init(node_playing, "Playing Game",1,node_play_game,NULL,NULL,NULL, &play);
+
+    menu_node_init(node_send_difficulty, "Send difficulty",1,node_set_difficulty,NULL,NULL,NULL, &send_difficulty);
+
+    menu_node_init(node_easy_setting, "1. Easy", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
+    menu_node_init(node_medium_setting, "2. Medium", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
+    menu_node_init(node_hard_setting, "3. Hard", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
 
     //Create linked lists
-    
+    /*
     node_home->nxt = node_exit;
     node_home->prv = NULL;
     node_exit->nxt = NULL;
     node_exit->prv = node_home;
-
+*/
     node_play_game->nxt = node_highscores;
     node_play_game->prv = NULL;
-    node_highscores->nxt = node_settings;
+    node_highscores->nxt = node_set_difficulty;
     node_highscores->prv = node_play_game;
-    node_settings->nxt = NULL;
-    node_settings->prv = node_highscores;
-
-    node_calibrate_joystick->nxt = node_set_difficulty;
-    node_calibrate_joystick->prv = NULL;
     node_set_difficulty->nxt = NULL;
-    node_set_difficulty->prv = node_calibrate_joystick;
-    
+    node_set_difficulty->prv = node_highscores;
+
     node_easy_setting->nxt = node_medium_setting;
     node_easy_setting->prv = NULL;
 
@@ -104,8 +105,11 @@ void create_linked_list(){
     node_hard_setting->nxt = NULL;
     node_hard_setting->prv = node_medium_setting;
 
+    node_playing->nxt = NULL;
+    node_playing->prv = NULL;
 
 
+    //current_node 
 
 }
 
@@ -157,19 +161,15 @@ void print_menu(menu_node_t* node) {
     oled_write_word(node->tail->name);
 }
 
-
 void menu_init(){
     create_linked_list();
-    //printf("%s\n", node_set_difficulty->parent->name);
     volatile int joystick_pos = 0;
     JOYSTICK menu_joystick;
-    current_node = node_home;
+    current_node = node_play_game;
     int linked_list_len = current_node->num_siblings;
-    print_menu(current_node);
+    print_menu(node_play_game);
     while(1){
         get_joystick_values(&menu_joystick);
-        //
-        //can_write()
         if (menu_joystick.y_direction == UP) {
             if (joystick_pos == 0){
                 joystick_pos = linked_list_len-1;
@@ -192,6 +192,7 @@ void menu_init(){
             (*current_node->action)(current_node->first_child);
             current_node = current_node->first_child;
             joystick_pos = 0;
+            _delay_ms(100);
         }
         if ((menu_joystick.x_direction == LEFT) && (current_node->parent != NULL)){
             current_node = current_node->parent;
@@ -218,15 +219,9 @@ void menu_init(){
             _delay_ms(200);
         }
         oled_clear_arrow(joystick_pos,0);
+
     }
-    _delay_ms(3000);
-    print_settings();
 }
-
-void menu_loop(){
-
-}
-
 
 void menu_get_position(int *position, JOYSTICK* menu_joystick){
     get_joystick_values(menu_joystick);
@@ -240,21 +235,19 @@ void menu_get_position(int *position, JOYSTICK* menu_joystick){
 }
 
 void send_difficulty(menu_node_t* node){ //not currently working
+    //printf("nodename: %s\r\n", current_node->name);
     int difficulty = 0;
-    if (node->name == "1. Easy"){
+    if (current_node->name == "1. Easy"){
         int difficulty = 4;
     }
-    if (node->name == "2. Medium"){
+    if (current_node->name == "2. Medium"){
         int difficulty = 1;
     }
-    if (node->name == "3. Hard"){
+    if (current_node->name == "3. Hard"){
         int difficulty = 2;
     }
     printf("difficulty set to: %d", difficulty);
-    MESSAGE message;
-    message.id = 0;
-    message.length = 1;
-    message.data[0] = difficulty;
+    
     oled_clear();
     oled_goto_pos(3,0);
 	for (int i = 0; i < 3; i++) {
@@ -276,30 +269,58 @@ void send_difficulty(menu_node_t* node){ //not currently working
         oled_clear_line(4);
 	}
     oled_clear();
-          /*send the message over the can buss*/
-    current_node = node_home;
-    print_menu(current_node);
+    current_node = node->parent->parent;
+    print_menu(node_play_game);
+    _delay_ms(500);
+    /*send the message over the can buss
+    MESSAGE message;
+    message.id = 0;
+    message.length = 1;
+    message.data[0] = difficulty;
+    //printf("nodename: %s\r\n", current_node->name);
+    */
     //can_write(&message);
 }
 
 
 
 void play(menu_node_t* node) {
+    printf("Playing ping pong\n");
     oled_clear();
     oled_goto_pos(4,4);
+    for (int i = 0; i < 3; i++) {
+    	char word[] = " Good luck!";
+        char wait[] = " Please wait.";
+        char wait2[] = " Please wait..";
+        char wait3[] = " Please wait...";
+        char* wait_list[3];
+        wait_list[0] = wait;
+        wait_list[1] = wait2;
+        wait_list[2] = wait3;
+
+        oled_goto_line(3);
+	    oled_write_word(word);	
+        oled_goto_pos(4,0);
+        oled_write_word(wait_list[i%3]);
+
+	    _delay_ms(1000);
+        oled_clear_line(4);
+	}
+    oled_clear();
+    oled_goto_pos(3,0);
     oled_write_word("Playing Ping Pong");
-    JOYSTICK menu_joystick;
-    /*while(1){
-    get_joystick_values(&menu_joystick);
-    input_com_send_data();
+    //JOYSTICK game_joystick;
+    while(1){
+        //get_joystick_values(&game_joystick);
+        input_com_send_data();
     /*if (can_interrupt() { //We need an interrupt to know when the game is over
             can_receive(&can_message);
             game_over();
             _delay_ms(2000);
             current_node = node_home;
             break;
-        }
     }*/
+    }
 }
 
 

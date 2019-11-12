@@ -18,9 +18,9 @@ int main(void){
 	
 	USART_Init(MYUBRR);
 	memory_map_init();
-	oled_init();;
+	oled_init();
 	can_init();
-	//menu_init(); //main  loop inside here
+	menu_init(); //main  loop inside here
 
 
 

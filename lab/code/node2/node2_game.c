@@ -29,12 +29,13 @@
             }
             if (can_message.id == 1){ // userdata
                 put_can_message_into_user_data(&can_message, &user_data);
-                joystick_to_servo(user_data.x_analog);
+                printf("userdata received, x_analog = %d\n",user_data.x_analog);
+                /*joystick_to_servo(user_data.x_analog);
                 controller_set_reference(user_data.x_analog);
                 controller_update();
                 solenoid_update_shot(user_data.joystick_button);
                 printf("right: %d  \r\n", user_data.joystick_button); 
-
+                */
                 //if IR_lys_set 
                     // set can_message.id = 5 
                 continue;

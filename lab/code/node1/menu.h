@@ -34,11 +34,7 @@ void print_menu();
 
 void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t* parent,menu_node_t* first_child, menu_node_t* head, menu_node_t* tail, void* action);
 
-void menu_loop();
-
 void menu_init();
-
-void menu_get_position(int *position, JOYSTICK* joystick);
 
 void game_finished();
 

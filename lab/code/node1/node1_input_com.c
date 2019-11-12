@@ -35,8 +35,9 @@ void input_com_send_data(){
     /*put all data into the struct, then put all struct values into the can message*/
     put_all_data_into_user_data(&user_data);
     put_user_data_into_can_message(&message, &user_data);
-
     /*send the message over the can buss*/
     can_write(&message);
+    //jeg hørte man ikke skulle overflowe canbussen og derfor skulle ha litt delay så setter inn det hørte
+    _delay_ms(20);
 }
 

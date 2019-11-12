@@ -37,7 +37,13 @@
                     // set can_message.id = 5 
                 continue;
             }
-
+            if (can_message.id == 3){ //msg containing difficulty
+                printf("difficulty");
+                int difficulty = can_message.data[0];
+   
+   
+                   continue;   
+            }
             if (can_message.id == 4) { // play mario
                 printf("song\n\n");
                 play_mario();
@@ -59,12 +65,7 @@
                 solenoid_clear_shot();
                 //can_send message that game is over
             }*/
-            if (can_message.id == 3){ //msg containing difficulty
-                printf("difficulty");
-                int difficulty = can_message.data[0];
-                controller_difficulty(difficulty);
-                continue;   
-            }
+
            }
 }
        

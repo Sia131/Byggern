@@ -11,7 +11,6 @@
 #include "menu.h"
 #include "node1_CAN.h"
 #include "node1_input_com.h"
-#include "sound.h"
 
 int main(void){
 	

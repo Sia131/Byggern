@@ -40,6 +40,8 @@ void game_finished();
 
 void play(menu_node_t* node);
 
+void play_song(menu_node_t* node);
+
 void send_difficulty(menu_node_t* node);
 
 #endif

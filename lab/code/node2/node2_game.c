@@ -20,7 +20,6 @@
     //uint8_t internal_state = 0; Maybe use this??
     while(1){
             can_receive(&can_message);
-
             if (can_message.id == 0){ //msg containing difficulty
                 printf("difficulty");
                 difficulty = can_message.data[0];
@@ -42,9 +41,9 @@
             }
 
             if (can_message.id == 2) { // play song
-                printf("song");
+                printf("song\n\n");
                 play_mario();
-                continue;
+                //continue;
             }
             /*can_message.id = 5 { //game 
                 play losing song

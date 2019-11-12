@@ -24,7 +24,7 @@ int main(){
     solenoid_init();
     //play_underworld();
 
-    printf("testing");
+    //printf("testing");
     game_play();
     return 0;
 }

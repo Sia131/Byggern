@@ -8,6 +8,7 @@
 #include "node1_oled.h"
 #include "menu.h"
 #include "node1_CAN.h"
+#include "node1_input_com.h"
 
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
@@ -22,6 +23,7 @@ static menu_node_t* node_easy_setting;
 static menu_node_t* node_medium_setting;
 static menu_node_t* node_hard_setting;
 static menu_node_t* node_send_difficulty;
+static menu_node_t* node_song;
 
 
 
@@ -59,6 +61,7 @@ void create_linked_list(){
     node_set_difficulty = (menu_node_t*) malloc(sizeof(menu_node_t));
     current_node = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_playing = (menu_node_t*) malloc(sizeof(menu_node_t));
+    node_song = (menu_node_t*) malloc(sizeof(menu_node_t));
 
     node_send_difficulty = (menu_node_t*) malloc(sizeof(menu_node_t));
 
@@ -71,11 +74,10 @@ void create_linked_list(){
     menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
 */
     menu_node_init(node_play_game, "1. Play Game", 3, node_home, node_playing, node_play_game, node_set_difficulty, &play);
-    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_set_difficulty, NULL);
+    menu_node_init(node_highscores, "2. Highscores", 3, node_home, node_playing, node_play_game, node_set_difficulty, &play_song);
     menu_node_init(node_set_difficulty, "3. Set difficulty", 3, node_home, node_easy_setting, node_play_game, node_set_difficulty, &print_menu);
-
-    menu_node_init(node_playing, "Playing Game",1,node_play_game,NULL,NULL,NULL, &play);
-
+    //menu_node_init(node_playing, "Playing Game",1,node_play_game,NULL,NULL,NULL, &play);
+    //menu_node_init(node_song, "Playing song",1,node_highscores,NULL,NULL,NULL, &play_song);
     menu_node_init(node_send_difficulty, "Send difficulty",1,node_set_difficulty,NULL,NULL,NULL, &send_difficulty);
 
     menu_node_init(node_easy_setting, "1. Easy", 3, node_set_difficulty, node_easy_setting, node_easy_setting, node_hard_setting, &send_difficulty);
@@ -204,7 +206,7 @@ void menu_init(){
 
         printf("pos %d\t", joystick_pos);
         printf("node is at %s\n", current_node->name);
-
+        //printf("parent: %s\n", current_node->parent);
         oled_print_arrow(joystick_pos,0);
 
         uint8_t neutral = 50;
@@ -223,19 +225,7 @@ void menu_init(){
     }
 }
 
-void menu_get_position(int *position, JOYSTICK* menu_joystick){
-    get_joystick_values(menu_joystick);
-    if (menu_joystick->y_direction == UP){
-        *position += 1;
-    }
-    else if (menu_joystick->y_direction == DOWN){
-        *position -= 1;
-    }
-    *position = (*position % 4);
-}
-
 void send_difficulty(menu_node_t* node){ //not currently working
-    //printf("nodename: %s\r\n", current_node->name);
     int difficulty = 0;
     if (current_node->name == "1. Easy"){
         int difficulty = 4;
@@ -288,6 +278,7 @@ void play(menu_node_t* node) {
     printf("Playing ping pong\n");
     oled_clear();
     oled_goto_pos(4,4);
+    //play_song();
     for (int i = 0; i < 3; i++) {
     	char word[] = " Good luck!";
         char wait[] = " Please wait.";
@@ -324,6 +315,15 @@ void play(menu_node_t* node) {
 }
 
 
+void play_song(menu_node_t* node){
+    MESSAGE msg;
+    msg.id = 2;
+    msg.length = 1;
+    msg.data[0] = 4;
+    can_write(&msg);
+    current_node = current_node->parent;
+    _delay_ms(5000);
+}
 
 void game_finished(){
     /*

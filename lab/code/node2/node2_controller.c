@@ -18,10 +18,9 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
         motor_set_u(-50);
         _delay_ms(1);
     } */
-    motor_disable();
 
     timer4_init();
-    timer4_set_period(10);
+    timer4_set_period(40);
 }
 
 /*takes value from zero to hundred*/
@@ -38,9 +37,7 @@ void reset_integrator(){
     ctrl.sumE = 0;
 }
 
-
 void controller_update(){
-    motor_enable();
     int16_t error,p,d;
     int32_t i, u, temp;
 
@@ -86,15 +83,14 @@ void controller_update(){
     if (u < -MAX_INT){
         u = -MAX_INT;
     }
-    printf("%d \r\n",u);
+    //printf("%d \r\n",u);
     motor_set_u((int16_t)u);
-    //_delay_ms(100);
 }
 
 
 void controller_difficulty(uint8_t difficulty){
     if (difficulty = 0){ //easy
-        controller_init(3,0,12);
+        controller_init(4,0,8);
     }
     if (difficulty = 1){ //medium
         controller_init(8,0,4);
@@ -103,6 +99,7 @@ void controller_difficulty(uint8_t difficulty){
         controller_init(10,0,10);
     }    
 }
+
 
 void timer4_init(){
     cli();
@@ -115,7 +112,7 @@ void timer4_init(){
     TIMSK4 |= (1 << OCIE4A);
     sei();
 
-    TCCR4A&= ~((1 << COM4B1) | ( 1 < COM4B0));
+    TCCR4A &= ~((1 << COM4B1) | ( 1 < COM4B0));
 }
 
 
@@ -138,6 +135,7 @@ void timer4_stop(){
 
 
 ISR(TIMER4_COMPA_vect){
+    printf("test \r\n");
     controller_update();
     timer4_start();
 }

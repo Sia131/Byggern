@@ -7,6 +7,7 @@
 //this is pin number 2 on arduino shield
 
 static uint8_t solenoid_shot;
+static uint8_t shoot = 0;
 
 void solenoid_deactivate(){
     SOLENOID_PORT |= (1 << SOLENOID_PIN);
@@ -40,7 +41,11 @@ void solenoid_clear_shot(){
 }
 
 void solenoid_update_shot(uint8_t value){
-    if (value > 0){
+    if ((value == 1)&&(shoot == 0)){
+        shoot = 1;
         solenoid_shoot();
+    }
+    if (value == 0){
+        shoot = 0;
     }
 }

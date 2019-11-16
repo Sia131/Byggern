@@ -29,10 +29,9 @@
 
 
 void can_intr_init(){
-
     DDRD &= ~(1 << PD2);
+
     cli();
-    
 	INTRREG = (1 << INTRSEL);
     INTRSET = ( 1 << INTRSC);
     sei();
@@ -96,19 +95,17 @@ void can_receive(MESSAGE *msg){
     mcp_bit_modify(MCP_CANINTF, 0x01, 0);
     //clear flags
     received = 0;
+    
 }
 
-/*
+
 ISR(INTR_VECT){
     received = 1;
     //mcp_bit_modify(MCP_CANINTF, 0x01, 0);
 }
 
 ISR(BADISR_vect){}
-*/
 
-/*
 uint8_t get_received(){
     return received; 
 }
-*/

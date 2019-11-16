@@ -10,7 +10,7 @@ void sound_init(){
     non-inverting */
     TCCR3A = (1 << COM3A0);
 
-    /*Mode 14 -Fast PWM
+    /*Mode 12 -CTC
     */
     //TCCR3A |= (1 << WGM31);
     TCCR3B |= (1 << WGM33) | (1 << WGM32);

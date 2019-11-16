@@ -24,22 +24,13 @@ int main(){
     sound_init();
     solenoid_init();
 
-    printf("main");
-    //game_play();
+    //printf("main");
+    game_play();
 
-    MESSAGE can_message;
-    USER_DATA user_data;
-
-    controller_init(3,0,12);
-    //timer4_start();
+  
     
     while(1){
-        //controller_set_reference(-50);
-        //controller_update();
-        //_delay_ms(10);
-        motor_enable();
-        dac_send_analogue(0);
-
+        
     }
     return 0;
 }

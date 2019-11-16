@@ -26,6 +26,8 @@
 #define INTRSET EICRB 
 #define INTR_VECT INT2_vect
 
+
+
 void can_intr_init(){
 
     DDRD &= ~(1 << PD2);
@@ -51,7 +53,6 @@ void can_init(){
 	}
 
     can_intr_init();
-
     // set loopback mode
     //mcp_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 
@@ -97,10 +98,15 @@ void can_receive(MESSAGE *msg){
     received = 0;
 }
 
+/*
 ISR(INTR_VECT){
     received = 1;
     //mcp_bit_modify(MCP_CANINTF, 0x01, 0);
 }
 
-
 ISR(BADISR_vect){}
+*/
+
+uint8_t get_received(){
+    return received; 
+}

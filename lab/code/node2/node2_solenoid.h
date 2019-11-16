@@ -16,7 +16,7 @@ void solenoid_init();
 
 void solenoid_shoot();
 
-int solenoid_get_shot();
+uint8_t solenoid_get_shot();
 
 void solenoid_clear_shot();
 

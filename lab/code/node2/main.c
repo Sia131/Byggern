@@ -22,9 +22,21 @@ int main(){
     adc_init();
     sound_init();
     solenoid_init();
-    //play_underworld();
-    controller_init(4,0,4);
+
     printf("main");
-    game_play();
+    //game_play();
+
+    MESSAGE can_message;
+    USER_DATA user_data;
+
+    controller_init(3,0,12);
+    //timer4_start();
+    
+    while(1){
+        controller_set_reference(-20);
+        controller_update();
+        _delay_ms(20);
+
+    }
     return 0;
 }

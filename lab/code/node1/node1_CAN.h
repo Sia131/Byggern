@@ -5,7 +5,7 @@
 //#include "mcp2515.h"
 #include "node1_mcp.h"
 
-static uint8_t received;
+static uint8_t received = 0;
 
 
 typedef struct MESSAGE{
@@ -31,5 +31,7 @@ void can_intr_init();
 void can_write(const MESSAGE *msg);
 
 void can_receive(MESSAGE *msg);
+
+uint8_t get_received();
 
 #endif

@@ -5,7 +5,7 @@
 //#include "mcp2515.h"
 #include "node2_mcp.h"
 
-static uint8_t received;
+static uint8_t received = 0;
 
 
 typedef struct MESSAGE{

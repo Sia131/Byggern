@@ -6,7 +6,7 @@
 
 //this is pin number 2 on arduino shield
 
-static int solenoid_shot;
+static uint8_t solenoid_shot;
 
 void solenoid_deactivate(){
     SOLENOID_PORT |= (1 << SOLENOID_PIN);
@@ -31,7 +31,7 @@ void solenoid_shoot(){
     solenoid_deactivate();
 }
 
-int solenoid_get_shot(){
+uint8_t solenoid_get_shot(){
     return solenoid_shot;
 }
 

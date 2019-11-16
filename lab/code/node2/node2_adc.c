@@ -1,5 +1,7 @@
 #include "node2_adc.h"
 
+#define TRESHOLD 100 
+
 void adc_init(){
     /*set ADC2 as input*/
     /*Pin A2 on shield */
@@ -18,9 +20,6 @@ void adc_init(){
 
     /*Prescaler*/
     ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);
-
-    /* Left shift the ADC data */
-    //ADMUX |= (1 <<ADLAR);
 }
 
 
@@ -35,3 +34,11 @@ uint16_t adc_read(){
 }
 
 
+int lost_game(){
+    if (adc_read() < TRESHOLD){
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}

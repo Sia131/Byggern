@@ -28,7 +28,7 @@ void put_user_data_into_can_message(MESSAGE *can_message, USER_DATA* user_data){
 
 void input_com_send_data(){
     MESSAGE message;
-    message.id = 1;
+    message.id = 10;
     message.length = 5;
     USER_DATA user_data;
 

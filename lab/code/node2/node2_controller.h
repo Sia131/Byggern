@@ -3,6 +3,8 @@
 
 #include "node2_motor.h"
 #include "node2_input_com.h"
+#include <avr/interrupt.h>
+#include <avr/io.h>
 
 #define SCALING_FACTOR 129
 #define MAX_INT INT16_MAX
@@ -39,5 +41,15 @@ void controller_update();
 
 /* sets the difficulty and initializes the controller */
 void controller_difficulty(uint8_t difficulty);
+
+void timer4_init();
+
+void timer4_set_period(uint16_t ms);
+
+void timer4_start();
+
+void timer4_stop();
+
+uint8_t get_received();
 
 #endif

@@ -19,16 +19,12 @@ int main(void){
 	memory_map_init();
 	oled_init();
 	can_init();
-	menu_init(); //main  loop inside here
+	//menu_init(); //main  loop inside here
 
-
-
-
-	while(1){
+	while (1){
 		input_com_send_data();
-		printf("ddd \r\n");
+		_delay_ms(10);
 	}
-
 	return 0; 
 	
 

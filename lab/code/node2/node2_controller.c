@@ -18,6 +18,9 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
         motor_set_u(-50);
         _delay_ms(1);
     } */
+
+    //timer4_init();
+    //timer4_set_period(10);
 }
 
 /*takes value from zero to hundred*/
@@ -81,7 +84,7 @@ void controller_update(){
     if (u < -MAX_INT){
         u = -MAX_INT;
     }
-    printf("%d \r\n",u);
+    //printf("%d \r\n",u);
     motor_set_u((int16_t)u);
     //_delay_ms(100);
 }
@@ -96,6 +99,44 @@ void controller_difficulty(uint8_t difficulty){
     }
     if (difficulty = 2){ //hard
         controller_init(10,0,10);
-    }
-    
+    }    
 }
+
+void timer4_init(){
+    cli();
+    TCCR4A = 0;
+    /* TOP = OCR4A
+    Update of OCR4A = Immedatiate
+    TOV4 Flasg = MAX
+    */
+    TCCR4B = (1 << WGM42); //mode4 CTC 
+    TIMSK4 |= (1 << OCIE4A);
+    sei();
+
+    TCCR4A&= ~((1 << COM4B1) | ( 1 < COM4B0));
+}
+
+
+void timer4_set_period(uint16_t ms){
+    OCR4A = ms*0.001 * F_CPU/(2*256) - 1;
+}
+
+void timer4_start(){
+    TCNT4 = 0;
+    /*prescaler 256*/
+    TCCR4B |= (1 << CS42);
+    TCCR4B &= ~((1 << CS41) | (1 << CS40));
+}
+
+
+void timer4_stop(){
+    /*no clock source, timer/counter stopped */
+    TCCR4B &= ~((1 << CS42) | (1 << CS41) | (1 << CS40));
+}
+
+/*
+ISR(TIMER4_COMPA_vect){
+    controller_update();
+    timer4_start();
+}
+*/

@@ -18,9 +18,10 @@ void controller_init(int16_t K_p,int16_t K_i,int16_t K_d){
         motor_set_u(-50);
         _delay_ms(1);
     } */
+    motor_disable();
 
-    //timer4_init();
-    //timer4_set_period(10);
+    timer4_init();
+    timer4_set_period(10);
 }
 
 /*takes value from zero to hundred*/
@@ -39,6 +40,7 @@ void reset_integrator(){
 
 
 void controller_update(){
+    motor_enable();
     int16_t error,p,d;
     int32_t i, u, temp;
 
@@ -84,7 +86,7 @@ void controller_update(){
     if (u < -MAX_INT){
         u = -MAX_INT;
     }
-    //printf("%d \r\n",u);
+    printf("%d \r\n",u);
     motor_set_u((int16_t)u);
     //_delay_ms(100);
 }
@@ -134,9 +136,8 @@ void timer4_stop(){
     TCCR4B &= ~((1 << CS42) | (1 << CS41) | (1 << CS40));
 }
 
-/*
+
 ISR(TIMER4_COMPA_vect){
     controller_update();
     timer4_start();
 }
-*/

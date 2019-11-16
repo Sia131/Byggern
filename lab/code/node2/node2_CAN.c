@@ -107,6 +107,8 @@ ISR(INTR_VECT){
 ISR(BADISR_vect){}
 */
 
+/*
 uint8_t get_received(){
     return received; 
 }
+*/

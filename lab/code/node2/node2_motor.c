@@ -61,8 +61,10 @@ int16_t motor_read_encoder(){
 }
 
 void motor_set_u(int16_t value){
+    printf("value1 %d\r\n", value);
     value = value/129;
     uint8_t new_value;
+    printf("value2 %d\r\n", value);
     if (value < -10){
         motor_set_direction(-1);
         value = -value;
@@ -75,6 +77,7 @@ void motor_set_u(int16_t value){
     else{
         new_value = 0;
     }
+    printf("speed %d\r\n", new_value);
     dac_send_analogue(new_value);
 }
 

@@ -16,6 +16,7 @@
 
 int main(){
     
+    
     USART_Init(MYUBRR);
     can_init();
     pwm_init();
@@ -33,9 +34,11 @@ int main(){
     //timer4_start();
     
     while(1){
-        controller_set_reference(-20);
-        controller_update();
-        _delay_ms(20);
+        //controller_set_reference(-50);
+        //controller_update();
+        //_delay_ms(10);
+        motor_enable();
+        dac_send_analogue(0);
 
     }
     return 0;

@@ -32,4 +32,6 @@ void can_write(const MESSAGE *msg);
 
 void can_receive(MESSAGE *msg);
 
+uint8_t get_received();
+
 #endif

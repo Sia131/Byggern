@@ -3,7 +3,6 @@
 #include "fonts.h"
 
 
-
 //these are the lowest abstraction functions
 void oled_write_data(uint8_t data){
     memory_map_write_oled_data(data);
@@ -125,9 +124,18 @@ void oled_write_word(char* word){
     }
 }
 
+void oled_write_PROGMEM_word(const char* word){
+    int i = 0;
+    while(word[i] != '\0'){
+        oled_write_char(word[i]);
+        i++;
+    }
+}
 
 /*
 void oled_write_data(char data);
 
 void oled_print(uint8_t * data);
 */
+
+

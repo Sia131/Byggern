@@ -1,6 +1,6 @@
 #include "node2_adc.h"
 
-#define TRESHOLD 100 
+#define TRESHOLD 50 
 
 void adc_init(){
     /*set ADC2 as input*/

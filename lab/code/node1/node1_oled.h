@@ -1,10 +1,6 @@
 
 #include "node1_memory_map.h"
 #include <stdlib.h>
-
-
-
-
 #ifndef NODE1_OLED_H_
 #define NODE1_OLED_H_
 
@@ -54,6 +50,7 @@ void oled_write_char(char c);
 
 void oled_write_word(char* word);
 
+void oled_write_PROGMEM_word(const char* word);
 
 void oled_goto_home(); //brings the pointer to line 0 and column 0
 

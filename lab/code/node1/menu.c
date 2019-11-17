@@ -10,6 +10,7 @@
 #include "node1_CAN.h"
 #include "node1_input_com.h"
 #include "highscores.h"
+#include <avr/pgmspace.h>
 
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
@@ -25,7 +26,16 @@ static menu_node_t* node_medium_setting;
 static menu_node_t* node_hard_setting;
 static menu_node_t* node_send_difficulty;
 static menu_node_t* node_play_song;
+static menu_node_t* node_show_highscores;
 
+/*
+const char text_play_game[] PROGMEM = "1. Play Game";
+const char text3[] PROGMEM = "2. Highscores";
+const char text4[] PROGMEM = "3. Set difficulty";
+const char esdfsdf[] PROGMEM = "4. Play game";
+const char text_play_g123ame[] PROGMEM = "1. Easy";
+
+*/
 
 
 void oled_print_arrow(uint8_t row, uint8_t col){
@@ -63,6 +73,7 @@ void create_linked_list(){
     current_node = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_play_song = (menu_node_t*) malloc(sizeof(menu_node_t));
 
+    //node_show_highscores = (menu_node_t*) malloc(sizeof(menu_node_t));
 
     node_easy_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_medium_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
@@ -71,11 +82,12 @@ void create_linked_list(){
     menu_node_init(node_home, "1. Enter Main Menu", 2, NULL, node_play_game, node_home, node_exit, &print_menu);
     menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
 */
-    menu_node_init(node_play_game, "1. Play Game", 4, node_home, NULL, node_play_game, node_play_song, &play);
-    menu_node_init(node_highscores, "2. Highscores", 4, node_home, NULL, node_play_game, node_play_song, &play_song);
+    menu_node_init(node_play_game, "1. Play game", 4, node_home, NULL, node_play_game, node_play_song, &play);
+    menu_node_init(node_highscores, "2. Highscores", 4, node_home, NULL, node_play_game, node_play_song,&print_menu);
     menu_node_init(node_set_difficulty, "3. Set difficulty", 4, node_home, node_easy_setting, node_play_game, node_play_song, &print_menu);
     menu_node_init(node_play_song, "4. Play Song", 4, node_home, NULL,node_play_game,node_play_song, &play_song);
-
+    menu_node_init(node_show_highscores,"atm",1,node_highscores,NULL,NULL,NULL,NULL);
+    //menu_node_init(node_show_highscores, "diff", 1, node_highscores,NULL,node_show_highscores,node_show_highscores,&show_highscores);
 
     menu_node_init(node_easy_setting, "1. Easy", 3, node_set_difficulty,NULL , node_easy_setting, node_hard_setting, &send_difficulty);
     menu_node_init(node_medium_setting, "2. Medium", 3, node_set_difficulty,NULL , node_easy_setting, node_hard_setting, &send_difficulty);
@@ -114,40 +126,6 @@ void create_linked_list(){
 
 }
 
-void print_loading_screen() {
-    oled_goto_pos(3,0);
-	for (int i = 0; i < 6; i++) {
-    	char word[] = " Welcome to this session ";
-        char wait[] = " Please wait.";
-        char wait2[] = " Please wait..";
-        char wait3[] = " Please wait...";
-        char* wait_list[3];
-        wait_list[0] = wait;
-        wait_list[1] = wait2;
-        wait_list[2] = wait3;
-
-        oled_goto_line(3);
-	    oled_write_word(word);	
-        oled_goto_pos(4,0);
-        oled_write_word(wait_list[i%3]);
-
-	    _delay_ms(1000);
-        oled_clear_line(4);
-	}
-    oled_clear();
-    
-    oled_goto_pos(3,0);
-    char word[] = "Use the Joystick";
-    char word2[] = "to navigate through the menu";
-    oled_write_word(word);	
-    oled_goto_pos(4,0);
-    oled_write_word(word2);
-    _delay_ms(3000);
-
-
-    oled_clear();
-}
-
 void print_menu(menu_node_t* node) {
     oled_clear();
     menu_node_t* curr_node = node->head;
@@ -169,6 +147,8 @@ void menu_init(){
     current_node = node_play_game;
     int linked_list_len = current_node->num_siblings;
     print_menu(node_play_game);
+    int* submenus = malloc(sizeof(menu_node_t));
+	printf("malloc (%d)\r\n", submenus);
     while(1){
         get_joystick_values(&menu_joystick);
         if (menu_joystick.y_direction == UP) {
@@ -243,19 +223,19 @@ void send_difficulty(){ //not currently working
     oled_clear();
     oled_goto_pos(3,0);
 	for (int i = 0; i < 3; i++) {
-    	char word[] = " Setting difficulty ";
-        char wait[] = " Please wait.";
-        char wait2[] = " Please wait..";
-        char wait3[] = " Please wait...";
-        char* wait_list[3];
+    	const char word[] PROGMEM = " Setting difficulty ";
+        const char wait[] PROGMEM = " Please wait.";
+        const char wait2[] PROGMEM = " Please wait..";
+        const char wait3[] PROGMEM = " Please wait...";
+        const char* wait_list[3];
         wait_list[0] = wait;
         wait_list[1] = wait2;
         wait_list[2] = wait3;
 
         oled_goto_line(3);
-	    oled_write_word(word);	
+	    oled_write_PROGMEM_word(word);	
         oled_goto_pos(4,0);
-        oled_write_word(wait_list[i%3]);
+        oled_write_PROGMEM_word(wait_list[i%3]);
 
 	    _delay_ms(1000);
         oled_clear_line(4);
@@ -263,58 +243,59 @@ void send_difficulty(){ //not currently working
     oled_clear();
     _delay_ms(500);
     MESSAGE message;
-    message.id = 3;
+    message.id = 30;
     message.length = 1;
-    message.data[0] = difficulty;
+    message.data[0] = difficulty;int* submenus = malloc(sizeof(menu_node_t));
+	printf("malloc (%d)\r\n", submenus);
     can_write(&message);
 }
 
 
 
 void play() {
-    printf("Playing ping pong\n");
     oled_clear();
     oled_goto_pos(4,4);
-    //play_song();
     for (int i = 0; i < 3; i++) {
-    	char word[] = " Good luck!";
-        char wait[] = " Please wait.";
-        char wait2[] = " Please wait..";
-        char wait3[] = " Please wait...";
+    	const char word[] PROGMEM= " Good luck!";
+        const char wait[] PROGMEM= " Please wait.";
+        const char wait2[] PROGMEM = " Please wait..";
+        const char wait3[] PROGMEM = " Please wait...";
         char* wait_list[3];
         wait_list[0] = wait;
         wait_list[1] = wait2;
         wait_list[2] = wait3;
 
         oled_goto_line(3);
-	    oled_write_word(word);	
+	    oled_write_PROGMEM_word(word);	
         oled_goto_pos(4,0);
-        oled_write_word(wait_list[i%3]);
+        oled_write_PROGMEM_word(wait_list[i%3]);
 
 	    _delay_ms(1000);
         oled_clear_line(4);
 	}
     oled_clear();
     oled_goto_pos(3,0);
-    oled_write_word("Playing Ping Pong");
-    //JOYSTICK game_joystick;
+    const char play_pong[] = "Playing ping pong";
+    oled_write_PROGMEM_word(play_pong);
     while(1){
-        //get_joystick_values(&game_joystick);
         input_com_send_data();
-        can_receive(&can_message);
+        MESSAGE can_message;
+        MESSAGE can_message_received;
         if (get_received()) {
+            printf("can interrupt\n\n\n");
+            can_receive(&can_message_received);
+            uint8_t score = can_message_received.data[0];
+            printf("score: %d\n\n\n", score);
             game_finished();
             break;
-
         }
-    }
     }
 }
 
 
 void play_song(menu_node_t* node){
     MESSAGE msg;
-    msg.id = 4;
+    msg.id = 40;
     msg.length = 1;
     msg.data[0] = 4;
     can_write(&msg);
@@ -324,14 +305,19 @@ void play_song(menu_node_t* node){
 void game_finished(){
     oled_clear();
     oled_goto_pos(3,4);
-    oled_write_word("Game over!");
+    /*oled_write_word("Game over!");
     oled_goto_pos(4,4);
-    oled_write_word("Check highscores to see if you made it!");
-    can_receive(&can_message);
+    oled_write_word("Check hk");
+	int* submenus = malloc(sizeof(menu_node_t));
+	printf("malloc (%d)\r\n", submenus);
+    oled_goto_pos(5,4);
+    oled_write_word("to see if you made it");
+    MESSAGE can_message;
+    can_receive(&can_message);10
     if (can_message.id == 1) {
         int score = can_message.data[0];
-        update_highscores();
+        update_highscores(score);
         printf("score: %d", score);
-
-    }
+        current_node = node_home;
+    }*/
 }

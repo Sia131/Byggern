@@ -24,14 +24,21 @@ int main(){
     sound_init();
     solenoid_init();
 
-    //printf("main");
-    //game_play();
+    printf("main \r\n");
+    game_play();
+    controller_init(4,0,8);
+    timer4_start();
 
-  
-    
-    while(1){
-        printf("%d \r\n", adc_read());
+    while (1)
+    {
+        USER_DATA user_data;
+        input_com_receive_data(&user_data);
+        controller_set_reference(50);
         
     }
+    
+  
+    
+    
     return 0;
 }

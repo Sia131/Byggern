@@ -19,17 +19,10 @@ int main(void){
 	memory_map_init();
 	oled_init();
 	can_init();
-	//menu_init(); //main  loop inside here
-
-	MESSAGE can_message;
-	/*
-	while (get_received()==0){
-		input_com_send_data();
-		_delay_ms(10);
-	}
-	can_receive(&can_message);
+	menu_init(); //main  loop inside here
+	/*can_receive(&can_message);
 	printf("can id; %d  can message %d  \r\n", can_message.id, can_message.data[0]);
-	*/
+	
 	while(get_received()==0){
 		can_message.length = 1;
 		can_message.id = 50;
@@ -39,7 +32,7 @@ int main(void){
 	can_receive(&can_message);
 	printf("can id; %d  can message %d  \r\n", can_message.id, can_message.data[0]);
 
-	printf("nothing");
+	printf("nothing");*/
 	return 0; 
 
 }

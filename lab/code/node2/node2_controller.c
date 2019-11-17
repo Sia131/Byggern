@@ -135,7 +135,6 @@ void timer4_stop(){
 
 
 ISR(TIMER4_COMPA_vect){
-    printf("test \r\n");
     controller_update();
     timer4_start();
 }

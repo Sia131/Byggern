@@ -31,9 +31,9 @@
                 timer4 = 1;
             }
             put_can_message_into_user_data(&can_message, &user_data);
-            printf("userdata received, x_analog = %d\n",user_data.x_analog);
+            //printf("userdata received, x_analog = %d\n",user_data.x_analog);
             joystick_to_servo(user_data.x_analog);
-            controller_set_reference(user_data.x_analog);
+            controller_set_reference(user_data.right_analog);
             solenoid_update_shot(user_data.joystick_button);
 
             if (lost_game() == 1){
@@ -46,6 +46,9 @@
                 can_write(& return_message);
                 solenoid_clear_shot();
                 play_mario();
+                printf("%d \r\n",adc_read());
+                
+
             }
             continue;
         }
@@ -65,7 +68,7 @@
             return_message.id = 4;
             return_message.length = 4;
             can_write(& return_message);     
-            //play_mario();
+            play_mario();
             continue;
         }
         if (can_message.id == 50) { // play underworld

@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "node1_CAN.h"
 #include "node1_input_com.h"
+#include "highscores.h"
 
 static menu_node_t* node_home;
 static menu_node_t* node_exit;
@@ -300,13 +301,13 @@ void play() {
     while(1){
         //get_joystick_values(&game_joystick);
         input_com_send_data();
-    /*if (can_interrupt() { //We need an interrupt to know when the game is over
-            can_receive(&can_message);
-            game_over();
-            _delay_ms(2000);
-            current_node = node_home;
+        can_receive(&can_message);
+        if (get_received()) {
+            game_finished();
             break;
-    }*/
+
+        }
+    }
     }
 }
 
@@ -321,10 +322,16 @@ void play_song(menu_node_t* node){
 }
 
 void game_finished(){
-    /*
     oled_clear();
     oled_goto_pos(3,4);
     oled_write_word("Game over!");
     oled_goto_pos(4,4);
-    oled_write_word("Check highscores to see if you made it!");*/
+    oled_write_word("Check highscores to see if you made it!");
+    can_receive(&can_message);
+    if (can_message.id == 1) {
+        int score = can_message.data[0];
+        update_highscores();
+        printf("score: %d", score);
+
+    }
 }

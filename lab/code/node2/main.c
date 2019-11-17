@@ -25,11 +25,12 @@ int main(){
     solenoid_init();
 
     //printf("main");
-    game_play();
+    //game_play();
 
   
     
     while(1){
+        printf("%d \r\n", adc_read());
         
     }
     return 0;

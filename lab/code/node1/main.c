@@ -11,15 +11,28 @@
 #include "menu.h"
 #include "node1_CAN.h"
 #include "node1_input_com.h"
+#include "highscores.h"
+#include <avr/pgmspace.h>
+
+    const char tester[] PROGMEM = "testing";
 
 int main(void){
-	
-	
+    //oled_clear();
+    //oled_goto_pos(0,0);
+	//oled_print_pgm(tester);
+    //oled_write_word("hei");
 	USART_Init(MYUBRR);
 	memory_map_init();
-	oled_init();
 	can_init();
-	menu_init(); //main  loop inside here
+	oled_init();
+    print_highscores();
+    /*for (int i = 0; 15i <  highscore_list_length; i++) {
+        int point = highscore_list[i];
+        char chr[3];
+        itoa(point, chr,10); //convert int score to char 
+        printf("score is %s",chr);
+    }*/
+    menu_init(); //main  loop inside here
 	/*can_receive(&can_message);
 	printf("can id; %d  can message %d  \r\n", can_message.id, can_message.data[0]);
 	

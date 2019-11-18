@@ -1,6 +1,7 @@
 
 #include "node1_oled.h"
 #include "fonts.h"
+#include <avr/pgmspace.h>
 
 
 //these are the lowest abstraction functions
@@ -124,18 +125,10 @@ void oled_write_word(char* word){
     }
 }
 
-void oled_write_PROGMEM_word(const char* word){
-    int i = 0;
-    while(word[i] != '\0'){
-        oled_write_char(word[i]);
-        i++;
-    }
+void oled_print_pgm(const char word_pointer[]) {
+	  char word[30];
+	  strcpy_P(word,word_pointer);
+		oled_write_word(word);
 }
-
-/*
-void oled_write_data(char data);
-
-void oled_print(uint8_t * data);
-*/
 
 

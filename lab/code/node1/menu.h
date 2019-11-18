@@ -38,7 +38,7 @@ void menu_init();
 
 void game_finished();
 
-void play();
+int play();
 
 void play_song();
 

@@ -30,7 +30,7 @@ void can_init(){
 	uint8_t mode = mcp_read(MCP_CANSTAT);
 	if ((mode & MODE_MASK) != MODE_CONFIG) {
 		printf("MCP ikke i konf.mod. CANSTT: %x \r\n", mode);
-	}
+        }
 
     can_intr_init();
 

@@ -31,9 +31,8 @@
                 timer4 = 1;
             }
             put_can_message_into_user_data(&can_message, &user_data);
-            //printf("userdata received, x_analog = %d\n",user_data.x_analog);
             joystick_to_servo(user_data.x_analog);
-            controller_set_reference(user_data.right_analog);
+            controller_set_reference(user_data.left_analog);
             solenoid_update_shot(user_data.joystick_button);
 
             if (lost_game() == 1){
@@ -43,7 +42,7 @@
                 return_message.id = 1;
                 return_message.length = 1;
                 return_message.data[0] =  solenoid_get_shot();
-                can_write(& return_message);
+                can_write(&return_message);
                 solenoid_clear_shot();
                 play_mario();
                 printf("%d \r\n",adc_read());
@@ -57,26 +56,16 @@
             printf("difficulty");
             difficulty = can_message.data[0];
             controller_difficulty(difficulty);
-            return_message.id = 3;
-            return_message.length = 1;
-            can_write(& return_message);   
             continue;   
         }
         if (can_message.id == 40) { // play mario
             can_message.id == 0; //IDLE
             printf("mario\n\n");
-            return_message.id = 4;
-            return_message.length = 4;
-            can_write(& return_message);     
             play_mario();
             continue;
         }
         if (can_message.id == 50) { // play underworld
             can_message.id == 0; //IDLE
-            return_message.id = 5;
-            return_message.length = 5;
-            can_write(& return_message);
-            printf("underworld\n\n");
             play_underworld();
             continue;
         }

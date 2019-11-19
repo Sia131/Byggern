@@ -43,7 +43,7 @@ void controller_update(){
 
     int16_t measurement =  motor_read_encoder();
     error = ctrl.r - measurement;
-    //printf("%d \r\n", error);
+    printf("%d \r\n", error);
 
     //proportional term
     if(error > ctrl.maxE){
@@ -89,13 +89,13 @@ void controller_update(){
 
 
 void controller_difficulty(uint8_t difficulty){
-    if (difficulty = 0){ //easy
+    if (difficulty == 0){ //easy
         controller_init(4,0,8);
     }
-    if (difficulty = 1){ //medium
+    else if(difficulty == 1){ //medium
         controller_init(8,0,4);
     }
-    if (difficulty = 2){ //hard
+    else if (difficulty == 2){ //hard
         controller_init(10,0,10);
     }    
 }

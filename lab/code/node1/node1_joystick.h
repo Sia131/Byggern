@@ -14,6 +14,7 @@ typedef struct JOYSTICK{
     uint8_t y_analog;
     joystick_direction x_direction;
     joystick_direction y_direction;
+    int joystick_pos;
 }JOYSTICK;
 
 

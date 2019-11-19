@@ -50,7 +50,7 @@ void oled_write_char(char c);
 
 void oled_write_word(char* word);
 
-void oled_print_pgm(const char word_pointer[]);
+void oled_write_pgm(const char word_pointer[]);
 
 void oled_goto_home(); //brings the pointer to line 0 and column 0
 

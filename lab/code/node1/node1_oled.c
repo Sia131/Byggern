@@ -125,7 +125,7 @@ void oled_write_word(char* word){
     }
 }
 
-void oled_print_pgm(const char word_pointer[]) {
+void oled_write_pgm(const char word_pointer[]) {
 	  char word[30];
 	  strcpy_P(word,word_pointer);
 		oled_write_word(word);

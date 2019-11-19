@@ -31,13 +31,18 @@ int main(){
 
     while (1)
     {
+        
         USER_DATA user_data;
         input_com_receive_data(&user_data);
-        controller_set_reference(50);
+        controller_set_reference(user_data.x_analog);
+        //controller_update();
+        //printf("%d \r\n", user_data.x_analog);
+        
+        joystick_to_servo(0);
         
     }
     
-  
+    
     
     
     return 0;

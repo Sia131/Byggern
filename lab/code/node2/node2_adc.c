@@ -28,7 +28,6 @@ uint16_t adc_read(){
     /*start conversion */
     ADCSRA |= (1 << ADSC);
     while(!(ADCSRA & (1 <<ADIF))){}
-    //printf("ddd");
     //double adc = ADCH;
     return ADC;
 }

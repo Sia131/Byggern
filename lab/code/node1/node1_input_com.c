@@ -36,9 +36,8 @@ void input_com_send_data(){
     put_all_data_into_user_data(&user_data);
     put_user_data_into_can_message(&message, &user_data);
 
-    /*send the message over the can buss*/
+    /*send the message over the can bus*/
     can_write(&message);
-    //jeg hørte man ikke skulle overflowe canbussen og derfor skulle ha litt delay så setter inn det hørte
-    _delay_ms(20);
+    _delay_ms(10); //to not overflow can
 }
 

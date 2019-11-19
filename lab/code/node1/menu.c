@@ -13,22 +13,22 @@
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 
-static menu_node_t* node_home;
 
+
+static menu_node_t* node_home;
 static menu_node_t* node_play_game;
 static menu_node_t* node_highscores;
 static menu_node_t* node_set_difficulty;
 static menu_node_t* current_node;
-
 static menu_node_t* node_playing;
-
 static menu_node_t* node_easy_setting;
 static menu_node_t* node_medium_setting;
 static menu_node_t* node_hard_setting;
-
 static menu_node_t* node_play_song;
-
 static menu_node_t* node_show_highscores;
+
+static int score;
+
 
 const char play_pong_c[] PROGMEM = "Playing ping pong";
 const char good_luck[] PROGMEM= " Good luck!";
@@ -36,7 +36,6 @@ const char setting_difficulty_c[] PROGMEM = " Setting difficulty ";
 const char wait_c[] PROGMEM = " Please wait";
 
 
-static int score;
 
 void oled_print_arrow(uint8_t row, uint8_t col){
     oled_goto_pos(row, col);
@@ -65,6 +64,7 @@ void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t
 }
 
 void create_linked_list(){
+
     node_home = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_play_game = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_highscores = (menu_node_t*) malloc(sizeof(menu_node_t));
@@ -78,7 +78,7 @@ void create_linked_list(){
     node_hard_setting = (menu_node_t*) malloc(sizeof(menu_node_t));
 
     menu_node_init(node_play_game, "1. Play game", 4, node_home, NULL, node_play_game, node_play_song, &play);
-    menu_node_init(node_highscores, "2. Highscores", 4, node_home, NULL, node_play_game, node_play_song, NULL);
+    menu_node_init(node_highscores, "2. Highscores", 4, node_home, NULL, node_play_game, node_play_song, &print_highscores);
     menu_node_init(node_set_difficulty, "3. Set difficulty", 4, node_home, node_easy_setting, node_play_game, node_play_song, &print_menu);
     menu_node_init(node_play_song, "4. Play Song", 4, node_home, NULL,node_play_game,node_play_song, &play_song);
 
@@ -122,6 +122,45 @@ void print_menu(menu_node_t* node) {
     oled_write_word(node->tail->name);
 }
 
+/*
+menu_node_t update_menu(){
+    get_joystick_values(&menu_joystick);
+        if (menu_joystick.y_direction == UP) {
+            if (joystick_pos == 0){
+                joystick_pos = linked_list_len-1;
+                current_node = current_node->tail;
+            } else {
+                (joystick_pos)--;
+                current_node = current_node->prv;
+            }
+        }
+        if (menu_joystick.y_direction == DOWN) {
+            if (joystick_pos == linked_list_len-1){
+                joystick_pos = 0;
+                current_node = current_node->head;
+            } else {
+                (joystick_pos)++;
+                current_node = current_node->nxt;
+            }
+        }
+        if ((menu_joystick.x_direction == RIGHT) ){
+            if (current_node->first_child != NULL){
+                (*current_node->action)(current_node->first_child);
+                current_node = current_node->first_child;
+                joystick_pos = 0;
+            } else if (current_node->first_child == NULL) {
+                if (current_node == node_highscores){
+                    print_highscores();   
+                }
+                if (current_node == node_play_game){
+                    score = play(); //play until interrupt
+                    printf("score: %d",score);
+                    update_highscores(score);
+                }
+            }
+        }
+}*/
+
 void menu_init(){
     create_linked_list();
     volatile int joystick_pos = 0;
@@ -159,12 +198,18 @@ void menu_init(){
             } else if (current_node->first_child == NULL) {
                 if (current_node == node_highscores){
                     //printf("node highscore: %d ", score);
+                    update_highscores(6);
                     print_highscores();   
                 }
-                if (current_node == node_play_game){
+                /*if (current_node == node_play_game){
                     score = play(); //play until interrupt
                     printf("score: %d",score);
                     update_highscores(score);
+                }*/
+                else{
+                (*current_node->action)();
+                (*current_node->parent->action)(current_node->head);
+
                 }
             }
         }
@@ -176,8 +221,8 @@ void menu_init(){
         linked_list_len = current_node->num_siblings;
         joystick_pos = abs(joystick_pos % linked_list_len);
 
-        //printf("pos %d\t", joystick_pos);
-        //printf("node is at %s\n", current_node->name);
+        printf("pos %d\t", joystick_pos);
+        printf("node is at %s\n", current_node->name);
         oled_print_arrow(joystick_pos,0);
 
         uint8_t neutral = 50;
@@ -189,7 +234,7 @@ void menu_init(){
                 _delay_ms(1);
             }
         } else  {
-            _delay_ms(200);
+            _delay_ms(250);
         }
         oled_clear_arrow(joystick_pos,0);
 
@@ -213,12 +258,12 @@ void send_difficulty(){ //fix
     oled_print_pgm(setting_difficulty_c);
     _delay_ms(1000);
     oled_clear();
-    _delay_ms(500);
     MESSAGE message;
     message.id = 30;
     message.length = 1;
-    message.data[0] = difficulty;int* submenus = malloc(sizeof(menu_node_t));
+    message.data[0] = difficulty;
     can_write(&message);
+    _delay_ms(1000);
 }
 
 
@@ -235,9 +280,9 @@ int play() {
             MESSAGE can_message_received;
             can_receive(&can_message_received);
             score = can_message_received.data[0];
-            return score;
-            //printf("scoreupdate %d\r\n", score);
-            //update_highscores(score);
+            printf("score %d\r\n", score);
+            update_highscores(score);
+            _delay_ms(500);
             //game_finished();
             //current_node = current_node->parent;
             break;

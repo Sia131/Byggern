@@ -25,9 +25,6 @@ void print_highscores() {
 }
 
 void update_highscores(int score){
-    highscore_list[0] = score;
-    
-    printf("inside update");
     for (int i = 0; i <  highscore_list_length; i++) {
         if (score > highscore_list[i]) {
             printf("replacing highscore");

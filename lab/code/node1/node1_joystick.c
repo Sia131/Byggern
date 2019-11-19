@@ -18,10 +18,10 @@ void get_joystick_values(JOYSTICK *joystick){
     if(0x60 < x < 0x85){
         joystick->x_direction = NEUTRAL;
     }
-    if(x < 0x5F){
+    if(x < 0x65){
         joystick->x_direction = LEFT;
     }
-    if(x > 0x86){
+    if(x > 0x90){
         joystick->x_direction = RIGHT;
     }
         

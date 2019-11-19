@@ -25,7 +25,6 @@ int main(void){
 	memory_map_init();
 	can_init();
 	oled_init();
-    print_highscores();
     /*for (int i = 0; 15i <  highscore_list_length; i++) {
         int point = highscore_list[i];
         char chr[3];
